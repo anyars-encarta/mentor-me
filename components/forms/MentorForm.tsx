@@ -8,6 +8,7 @@ import CustomFormField from "../CustomFormField"
 import SubmitButton from "../SubmitButton"
 import { useState } from "react"
 import { UserFormValivation } from "@/lib/validation"
+import { useRouter } from "next/navigation"
 
 export enum FormFieldType {
     INPUT = 'input',
@@ -20,6 +21,7 @@ export enum FormFieldType {
 };
 
 const MentorForm = () => {
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<z.infer<typeof UserFormValivation>>({
@@ -31,8 +33,18 @@ const MentorForm = () => {
         },
     })
 
-    function onSubmit(values: z.infer<typeof UserFormValivation>) {
-        console.log(values)
+    const onSubmit = async ({ name, email, phone }: z.infer<typeof UserFormValivation>) => {
+        setIsLoading(true)
+
+        try {
+            // const userData = { name, email, phone };
+
+            // const user = await createUser(userData);
+
+            // if (user) router.push(`/mentees/${user.$id}/register`)
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     return (
