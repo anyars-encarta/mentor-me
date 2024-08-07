@@ -27,13 +27,12 @@ interface CustomProps {
     disabled?: boolean,
     dateFormat?: string,
     showTimeSelect?: boolean,
-    children: React.ReactNode,
+    children?: React.ReactNode,
     renderSkeleton?: (field: any) => React.ReactNode,
 }
 
 const RenderField = ({ field, props }: { field: any, props: CustomProps }) => {
-    const { fieldType, iconSrc, iconAlt, placeholder } = props;
-
+    const {fieldType, iconSrc, iconAlt, placeholder} = props;
     switch (fieldType) {
         case FormFieldType.INPUT:
             return (
@@ -78,7 +77,7 @@ const RenderField = ({ field, props }: { field: any, props: CustomProps }) => {
 };
 
 const CustomFormField = (props: CustomProps) => {
-    const { control, fieldType, name, label, placeholder, iconSrc, iconAlt } = props;
+    const { control, name, label } = props;
     
     return (
         <FormField
@@ -86,8 +85,8 @@ const CustomFormField = (props: CustomProps) => {
             name={name}
             render={({ field }) => (
                 <FormItem className='flex-1'>
-                    {fieldType !== FormFieldType.CHECKBOX && label && (
-                        <FormLabel>{label}</FormLabel>
+                    {props.fieldType !== FormFieldType.CHECKBOX && label && (
+                        <FormLabel className='shad-input-label'>{label}</FormLabel>
                     )}
 
                     <RenderField field={field} props={props} />
