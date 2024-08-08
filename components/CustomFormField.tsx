@@ -32,24 +32,23 @@ interface CustomProps {
 }
 
 const RenderField = ({ field, props }: { field: any, props: CustomProps }) => {
-    const {fieldType, iconSrc, iconAlt, placeholder} = props;
-    switch (fieldType) {
+    switch (props.fieldType) {
         case FormFieldType.INPUT:
             return (
                 <div className='flex rounded-md border border-dark-500 bg-dark-400'>
-                    {iconSrc && (
+                    {props.iconSrc && (
                         <Image
-                            src={iconSrc}
+                            src={props.iconSrc}
                             height={24}
                             width={24}
-                            alt={iconAlt || 'icon'}
+                            alt={props.iconAlt || 'icon'}
                             className='ml-2'
                         />
                     )}
 
                     <FormControl>
                         <Input
-                            placeholder={placeholder}
+                            placeholder={props.placeholder}
                             {...field}
                             className='shad-input border-0'
                         />
@@ -62,7 +61,7 @@ const RenderField = ({ field, props }: { field: any, props: CustomProps }) => {
                 <FormControl>
                     <PhoneInput 
                         defaultCountry='NG'
-                        placeholder={placeholder}
+                        placeholder={props.placeholder}
                         international
                         withCountryCallingCode
                         value={field.value as E164Number | undefined}
@@ -77,7 +76,7 @@ const RenderField = ({ field, props }: { field: any, props: CustomProps }) => {
 };
 
 const CustomFormField = (props: CustomProps) => {
-    const { control, name, label, fieldType } = props;
+    const { control, name, label } = props;
     
     return (
         <FormField
@@ -85,7 +84,7 @@ const CustomFormField = (props: CustomProps) => {
             name={name}
             render={({ field }) => (
                 <FormItem className='flex-1'>
-                    {fieldType !== FormFieldType.CHECKBOX && label && (
+                    {props.fieldType !== FormFieldType.CHECKBOX && label && (
                         <FormLabel className='shad-input-label'>{label}</FormLabel>
                     )}
 

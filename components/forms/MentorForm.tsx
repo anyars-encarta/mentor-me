@@ -9,6 +9,7 @@ import SubmitButton from "../SubmitButton"
 import { useState } from "react"
 import { UserFormValivation } from "@/lib/validation"
 import { useRouter } from "next/navigation"
+import { createUser } from "@/lib/actions/mentee.actions"
 
 export enum FormFieldType {
     INPUT = 'input',
@@ -37,11 +38,11 @@ const MentorForm = () => {
         setIsLoading(true)
 
         try {
-            // const userData = { name, email, phone };
+            const userData = { name, email, phone };
+            
+            const user = await createUser(userData);
 
-            // const user = await createUser(userData);
-
-            // if (user) router.push(`/mentees/${user.$id}/register`)
+            if (user) router.push(`/mentees/${user.$id}/register`)
         } catch (e) {
             console.log(e);
         }
