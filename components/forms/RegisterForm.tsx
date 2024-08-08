@@ -7,12 +7,12 @@ import { Form, FormControl } from "@/components/ui/form"
 import CustomFormField from "../CustomFormField"
 import SubmitButton from "../SubmitButton"
 import { useState } from "react"
-import { UserFormValivation } from "@/lib/validation"
+import { MenteeFormValidation } from "@/lib/validation"
 import { useRouter } from "next/navigation"
-import { createUser } from "@/lib/actions/mentee.actions"
+import { registerMentee } from "@/lib/actions/mentee.actions"
 import { FormFieldType } from "./MentorForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
-import { AppointmentTypes, GenderOptions } from "@/constatnts"
+import { AppointmentTypes, GenderOptions, MenteeFormDefaultValues } from "@/constatnts"
 import { Label } from "../ui/label"
 import { SelectItem } from "../ui/select"
 
@@ -20,24 +20,28 @@ const RegisterForm = ({ user }: { user: User }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
-    const form = useForm<z.infer<typeof UserFormValivation>>({
-        resolver: zodResolver(UserFormValivation),
+    const form = useForm<z.infer<typeof MenteeFormValidation>>({
+        resolver: zodResolver(MenteeFormValidation),
         defaultValues: {
-            name: "",
-            email: '',
-            phone: '',
+            ...MenteeFormDefaultValues,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
         },
-    })
+    });
 
-    const onSubmit = async ({ name, email, phone }: z.infer<typeof UserFormValivation>) => {
+    const onSubmit = async (values: z.infer<typeof MenteeFormValidation>) => {
         setIsLoading(true)
-
+        
         try {
-            const userData = { name, email, phone };
-
-            const user = await createUser(userData);
-
-            if (user) router.push(`/mentees/${user.$id}/register`)
+           const menteeData = {
+            ...values,
+            userId: user.$id,
+           }
+           
+           const mentee = await registerMentee(menteeData);
+           console.log('Mentee: ', mentee)
+           if (mentee) router.push(`/mentees/${user.$id}/new-appointment`);
         } catch (e) {
             console.log(e);
         }
@@ -61,7 +65,8 @@ const RegisterForm = ({ user }: { user: User }) => {
                     fieldType={FormFieldType.INPUT}
                     control={form.control}
                     name='name'
-                    placeholder={user.name}
+                    label='Full Name'
+                    placeholder='John Doe'
                     iconSrc='/assets/icons/user.svg'
                     iconAlt='user'
                 />
@@ -71,8 +76,8 @@ const RegisterForm = ({ user }: { user: User }) => {
                         fieldType={FormFieldType.INPUT}
                         control={form.control}
                         name='email'
-                        label='Email'
-                        placeholder={user.email}
+                        label='Email Address'
+                        placeholder='mentee@something.com'
                         iconSrc='/assets/icons/email.svg'
                         iconAlt='email'
                     />
@@ -82,21 +87,11 @@ const RegisterForm = ({ user }: { user: User }) => {
                         control={form.control}
                         name='phone'
                         label='Phone Number'
-                        placeholder={user.phone}
+                        placeholder='+234 012 345 6789'
                     />
                 </div>
 
                 <div className='flex flex-col gap-6 xl:flex-row'>
-                    {/* <CustomFormField
-                        fieldType={FormFieldType.DATE_PICKER}
-                        control={form.control}
-                        name='birthDate'
-                        label='Date of Birth'
-                        placeholder={user.email}
-                        iconSrc='/assets/icons/email.svg'
-                        iconAlt='email'
-                    /> */}
-
                     <CustomFormField
                         fieldType={FormFieldType.SEKELETON}
                         control={form.control}
@@ -109,8 +104,8 @@ const RegisterForm = ({ user }: { user: User }) => {
                                     onValueChange={field.onChange}
                                     defaultValue={field.value}
                                 >
-                                    {GenderOptions.map((option) => (
-                                        <div key={option} className='radio-group'>
+                                    {GenderOptions.map((option, i) => (
+                                        <div key={option + i} className='radio-group'>
                                             <RadioGroupItem value={option} id={option} />
                                             <Label htmlFor={option} className='cursor-pointer'>{option}</Label>
                                         </div>
@@ -135,9 +130,9 @@ const RegisterForm = ({ user }: { user: User }) => {
                         label='Appointment Type'
                         placeholder='Select Type of Appointment'
                     >
-                        {AppointmentTypes.map((appointment) => (
-                            <SelectItem key={appointment} value={appointment}>
-                                {appointment}
+                        {AppointmentTypes.map((appointment, i) => (
+                            <SelectItem key={appointment.name + i} value={appointment.name}>
+                                {appointment.name}
                             </SelectItem>
                         ))}
                     </CustomFormField>

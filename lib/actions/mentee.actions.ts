@@ -1,5 +1,5 @@
 import { ID, Query } from "node-appwrite"
-import { users } from "../appwrite.config"
+import { DATABASE_ID, databases, MENTEE_COLLECTION_ID, users } from "../appwrite.config"
 import { parseStringify } from "../utils";
 
 export const createUser = async (user: CreateUserParams) => {
@@ -34,3 +34,22 @@ export const getUser = async (userId: string) => {
         console.log(e)
     }
 };
+
+export const registerMentee = async ({...mentee}: RegisterUserParams) => {
+    try {
+        const newMentee = await databases.createDocument(
+            DATABASE_ID!,
+            MENTEE_COLLECTION_ID!,
+            ID.unique(),
+            {
+                ...mentee
+            }
+        )
+
+        console.log('New Mentee: ', newMentee)
+
+        return parseStringify(newMentee);
+    } catch (e) {
+        console.log(e)
+    }
+}
