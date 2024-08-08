@@ -127,19 +127,20 @@ const RegisterForm = ({ user }: { user: User }) => {
                     </div>
                 </section>
 
-                <CustomFormField
-                    fieldType={FormFieldType.SELECT}
-                    control={form.control}
-                    name='appointmentType'
-                    label='Appointment Type'
-                    placeholder='Select Type of Appointment'
-                >
-                    {AppointmentTypes.map((appointment) => (
-                        <SelectItem key={appointment} value={appointment}>
-                            {appointment}
-                        </SelectItem>
-                    ))}
-                </CustomFormField>
+                <div className='flex flex-col gap-6 xl:flex-row'>
+                    <CustomFormField
+                        fieldType={FormFieldType.SELECT}
+                        control={form.control}
+                        name='appointmentType'
+                        label='Appointment Type'
+                        placeholder='Select Type of Appointment'
+                    >
+                        {AppointmentTypes.map((appointment) => (
+                            <SelectItem key={appointment} value={appointment}>
+                                {appointment}
+                            </SelectItem>
+                        ))}
+                    </CustomFormField>
 
                     <CustomFormField
                         fieldType={FormFieldType.TEXTAREA}
@@ -148,6 +149,7 @@ const RegisterForm = ({ user }: { user: User }) => {
                         label='Appointment Reason'
                         placeholder='Briefly describe the reason for your appointment'
                     />
+                </div>
 
                 <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
             </form>
