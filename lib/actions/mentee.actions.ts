@@ -46,8 +46,6 @@ export const registerMentee = async ({...mentee}: RegisterUserParams) => {
             }
         )
 
-        console.log('New Mentee: ', newMentee)
-
         return parseStringify(newMentee);
     } catch (e) {
         console.log(e)

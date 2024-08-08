@@ -40,7 +40,7 @@ const RegisterForm = ({ user }: { user: User }) => {
            }
            
            const mentee = await registerMentee(menteeData);
-           console.log('Mentee: ', mentee)
+           
            if (mentee) router.push(`/mentees/${user.$id}/new-appointment`);
         } catch (e) {
             console.log(e);
