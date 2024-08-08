@@ -131,8 +131,8 @@ const RegisterForm = ({ user }: { user: User }) => {
                         placeholder='Select Type of Appointment'
                     >
                         {AppointmentTypes.map((appointment, i) => (
-                            <SelectItem key={appointment.name + i} value={appointment.name}>
-                                {appointment.name}
+                            <SelectItem key={appointment + i} value={appointment}>
+                                {appointment}
                             </SelectItem>
                         ))}
                     </CustomFormField>

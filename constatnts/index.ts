@@ -1,10 +1,6 @@
 export const GenderOptions = ['Male', 'Female', 'Other'];
 
-export const AppointmentTypes = [
-  {name: 'Councelling'}, 
-  {name:'Mentoring'}, 
-  {name:'Other'}
-];
+export const AppointmentTypes = ['Councelling', 'Mentoring', 'Other'];
 
 export const MenteeFormDefaultValues = {
     firstName: "",
