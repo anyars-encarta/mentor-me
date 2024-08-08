@@ -12,8 +12,9 @@ import { useRouter } from "next/navigation"
 import { createUser } from "@/lib/actions/mentee.actions"
 import { FormFieldType } from "./MentorForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
-import { GenderOptions } from "@/constatnts"
+import { AppointmentTypes, GenderOptions } from "@/constatnts"
 import { Label } from "../ui/label"
+import { SelectItem } from "../ui/select"
 
 const RegisterForm = ({ user }: { user: User }) => {
     const router = useRouter();
@@ -86,7 +87,7 @@ const RegisterForm = ({ user }: { user: User }) => {
                 </div>
 
                 <div className='flex flex-col gap-6 xl:flex-row'>
-                    <CustomFormField
+                    {/* <CustomFormField
                         fieldType={FormFieldType.DATE_PICKER}
                         control={form.control}
                         name='birthDate'
@@ -94,7 +95,7 @@ const RegisterForm = ({ user }: { user: User }) => {
                         placeholder={user.email}
                         iconSrc='/assets/icons/email.svg'
                         iconAlt='email'
-                    />
+                    /> */}
 
                     <CustomFormField
                         fieldType={FormFieldType.SEKELETON}
@@ -119,6 +120,34 @@ const RegisterForm = ({ user }: { user: User }) => {
                         )}
                     />
                 </div>
+
+                <section className='space-y-6'>
+                    <div className='mb-9 space-y-1'>
+                        <h2 className='sub-header'>Appointment Details</h2>
+                    </div>
+                </section>
+
+                <CustomFormField
+                    fieldType={FormFieldType.SELECT}
+                    control={form.control}
+                    name='appointmentType'
+                    label='Appointment Type'
+                    placeholder='Select Type of Appointment'
+                >
+                    {AppointmentTypes.map((appointment) => (
+                        <SelectItem key={appointment} value={appointment}>
+                            {appointment}
+                        </SelectItem>
+                    ))}
+                </CustomFormField>
+
+                    <CustomFormField
+                        fieldType={FormFieldType.TEXTAREA}
+                        control={form.control}
+                        name='reason'
+                        label='Appointment Reason'
+                        placeholder='Briefly describe the reason for your appointment'
+                    />
 
                 <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
             </form>
