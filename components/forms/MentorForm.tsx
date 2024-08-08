@@ -42,7 +42,7 @@ const MentorForm = () => {
             
             const user = await createUser(userData);
 
-            if (user) router.push(`/mentees/${user.$id}/register`)
+            if (user) router.push(`/mentees/${user.$id}/new-appointment`)
         } catch (e) {
             console.log(e);
         }

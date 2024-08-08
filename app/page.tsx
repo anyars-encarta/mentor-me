@@ -1,5 +1,4 @@
-import MentroForm from "@/components/forms/MentorForm";
-import { Button } from "@/components/ui/button";
+import MentorForm from "@/components/forms/MentorForm";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,7 +17,7 @@ const Home = () => {
             className='mb-12 h-10 w-fit'
           />
 
-          <MentroForm />
+          <MentorForm />
 
           <div className='text-14-regular mt-20 flex justify-between'>
             <p className='justify-end text-dark-600 xl:text-left'>

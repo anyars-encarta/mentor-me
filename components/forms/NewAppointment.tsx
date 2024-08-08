@@ -16,7 +16,7 @@ import { AppointmentTypes, GenderOptions, MenteeFormDefaultValues } from "@/cons
 import { Label } from "../ui/label"
 import { SelectItem } from "../ui/select"
 
-const RegisterForm = ({ user }: { user: User }) => {
+const NewAppointment = ({ user }: { user: User }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -141,7 +141,7 @@ const RegisterForm = ({ user }: { user: User }) => {
                         fieldType={FormFieldType.TEXTAREA}
                         control={form.control}
                         name='reason'
-                        label='Appointment Reason'
+                        label='Reason for Appointment'
                         placeholder='Briefly describe the reason for your appointment'
                     />
                 </div>
@@ -152,4 +152,4 @@ const RegisterForm = ({ user }: { user: User }) => {
     )
 }
 
-export default RegisterForm;
+export default NewAppointment;

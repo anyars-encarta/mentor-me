@@ -1,7 +1,6 @@
-import RegisterForm from '@/components/forms/RegisterForm'
+import NewAppointment from '@/components/forms/NewAppointment'
 import { getUser } from '@/lib/actions/mentee.actions'
 import Image from 'next/image'
-import Link from 'next/link'
 
 const Register = async ({ params: { userId } }: SearchParamProps) => {
   const user = await getUser(userId);
@@ -18,7 +17,7 @@ const Register = async ({ params: { userId } }: SearchParamProps) => {
             className='mb-12 h-10 w-fit'
           />
 
-          <RegisterForm user={user} />
+          <NewAppointment user={user} />
 
           <p className='copyright py-12'>
             © 2024 MentorMe
