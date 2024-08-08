@@ -55,11 +55,11 @@ const RenderField = ({ field, props }: { field: any, props: CustomProps }) => {
                     </FormControl>
                 </div>
             )
-        
+
         case FormFieldType.PHONE_INPUT:
             return (
                 <FormControl>
-                    <PhoneInput 
+                    <PhoneInput
                         defaultCountry='NG'
                         placeholder={props.placeholder}
                         international
@@ -70,6 +70,23 @@ const RenderField = ({ field, props }: { field: any, props: CustomProps }) => {
                     />
                 </FormControl>
             )
+
+        case FormFieldType.DATE_PICKER:
+            return (
+                <div className='flex rounded-md border border-dark-500 bg-dark-400'>
+                    <Image
+                        src='/assets/icons/calendar.svg'
+                        height={24}
+                        width={24}
+                        alt='calendar'
+                        className='ml-2'
+                    />
+
+                    <FormControl>
+                        
+                    </FormControl>
+                </div>
+            )
         default:
             break;
     }
@@ -77,7 +94,7 @@ const RenderField = ({ field, props }: { field: any, props: CustomProps }) => {
 
 const CustomFormField = (props: CustomProps) => {
     const { control, name, label } = props;
-    
+
     return (
         <FormField
             control={control}
