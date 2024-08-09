@@ -14,10 +14,10 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { GenderOptions, MenteeFormDefaultValues } from "@/constatnts"
 import { Label } from "../ui/label"
 import { useRouter } from "next/navigation"
-import AppointmentForm from "@/app/mentees/[userId]/new-appointment/NewAppointmentForm"
+import NewAppointmentForm from "@/app/mentees/[userId]/new-appointment/NewAppointmentForm"
 
 const RegisterForm = ({ user }: { user: User }) => {
-    const router = useRouter();
+    // const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<z.infer<typeof MenteeFormValidation>>({
@@ -27,6 +27,10 @@ const RegisterForm = ({ user }: { user: User }) => {
             name: user.name,
             email: user.email,
             phone: user.phone,
+            appointmentType: '',
+            schedule: new Date(),
+            reason: '',
+            additionalComments: ''
         },
     });
 
@@ -41,8 +45,7 @@ const RegisterForm = ({ user }: { user: User }) => {
 
             const mentee = await registerMentee(menteeData);
 
-            if (mentee) router.push('/success');
-
+            // if (mentee) router.push('/success');
             setIsLoading(false);
         } catch (e) {
             console.log(e);
@@ -118,9 +121,12 @@ const RegisterForm = ({ user }: { user: User }) => {
                     />
                 </div>
 
-                <AppointmentForm />
-
-                <SubmitButton isLoading={isLoading}>Book Appointment</SubmitButton>
+                <NewAppointmentForm
+                    type='create'
+                    userId={user.$id}
+                    form={form}
+                    isLoading={isLoading}
+                />
             </form>
         </Form>
     )

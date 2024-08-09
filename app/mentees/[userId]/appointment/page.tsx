@@ -2,7 +2,7 @@ import RegisterForm from '@/components/forms/RegisterForm'
 import { getUser } from '@/lib/actions/mentee.actions'
 import Image from 'next/image'
 
-const Register = async ({ params: { userId } }: SearchParamProps) => {
+const Appointment = async ({ params: { userId } }: SearchParamProps) => {
   const user = await getUser(userId);
 
   return (
@@ -19,7 +19,7 @@ const Register = async ({ params: { userId } }: SearchParamProps) => {
 
           <RegisterForm user={user} />
 
-          <p className='copyright py-12'>
+          <p className='copyright mt-10 py-12'>
             © 2024 MentorMe
           </p>
         </div>
@@ -36,4 +36,4 @@ const Register = async ({ params: { userId } }: SearchParamProps) => {
   )
 }
 
-export default Register
+export default Appointment
