@@ -8,15 +8,15 @@ import CustomFormField from "../CustomFormField"
 import SubmitButton from "../SubmitButton"
 import { useState } from "react"
 import { MenteeFormValidation } from "@/lib/validation"
-import { useRouter } from "next/navigation"
 import { registerMentee } from "@/lib/actions/mentee.actions"
 import { FormFieldType } from "./MentorForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
-import { AppointmentTypes, GenderOptions, MenteeFormDefaultValues } from "@/constatnts"
+import { GenderOptions, MenteeFormDefaultValues } from "@/constatnts"
 import { Label } from "../ui/label"
-import { SelectItem } from "../ui/select"
+import { useRouter } from "next/navigation"
+import AppointmentForm from "@/app/mentees/[userId]/new-appointment/NewAppointmentForm"
 
-const NewAppointment = ({ user }: { user: User }) => {
+const RegisterForm = ({ user }: { user: User }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -32,16 +32,18 @@ const NewAppointment = ({ user }: { user: User }) => {
 
     const onSubmit = async (values: z.infer<typeof MenteeFormValidation>) => {
         setIsLoading(true)
-        
+
         try {
-           const menteeData = {
-            ...values,
-            userId: user.$id,
-           }
-           
-           const mentee = await registerMentee(menteeData);
-           
-           if (mentee) router.push(`/mentees/${user.$id}/new-appointment`);
+            const menteeData = {
+                ...values,
+                userId: user.$id,
+            }
+
+            const mentee = await registerMentee(menteeData);
+
+            if (mentee) router.push('/success');
+
+            setIsLoading(false);
         } catch (e) {
             console.log(e);
         }
@@ -52,7 +54,7 @@ const NewAppointment = ({ user }: { user: User }) => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 flex-1">
                 <section className='space-y-4'>
                     <h1 className='header'>Welcome, {user.name} 👋</h1>
-                    <p className='text-dark-700'>Let us know more about yourself</p>
+                    <p className='text-dark-700'>Request a new appointment in 10 seconds</p>
                 </section>
 
                 <section className='space-y-6'>
@@ -116,40 +118,12 @@ const NewAppointment = ({ user }: { user: User }) => {
                     />
                 </div>
 
-                <section className='space-y-6'>
-                    <div className='mb-9 space-y-1'>
-                        <h2 className='sub-header'>Appointment Details</h2>
-                    </div>
-                </section>
+                <AppointmentForm />
 
-                <div className='flex flex-col gap-6 xl:flex-row'>
-                    <CustomFormField
-                        fieldType={FormFieldType.SELECT}
-                        control={form.control}
-                        name='appointmentType'
-                        label='Appointment Type'
-                        placeholder='Select Type of Appointment'
-                    >
-                        {AppointmentTypes.map((appointment, i) => (
-                            <SelectItem key={appointment + i} value={appointment}>
-                                {appointment}
-                            </SelectItem>
-                        ))}
-                    </CustomFormField>
-
-                    <CustomFormField
-                        fieldType={FormFieldType.TEXTAREA}
-                        control={form.control}
-                        name='reason'
-                        label='Reason for Appointment'
-                        placeholder='Briefly describe the reason for your appointment'
-                    />
-                </div>
-
-                <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
+                <SubmitButton isLoading={isLoading}>Book Appointment</SubmitButton>
             </form>
         </Form>
     )
 }
 
-export default NewAppointment;
+export default RegisterForm;

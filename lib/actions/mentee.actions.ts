@@ -36,6 +36,7 @@ export const getUser = async (userId: string) => {
 };
 
 export const registerMentee = async ({...mentee}: RegisterUserParams) => {
+    console.log('Started Register Mentee Action')
     try {
         const newMentee = await databases.createDocument(
             DATABASE_ID!,
@@ -47,6 +48,20 @@ export const registerMentee = async ({...mentee}: RegisterUserParams) => {
         )
 
         return parseStringify(newMentee);
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export const getMentee = async (userId: string) => {
+    try {
+        const mentees = await databases.listDocuments(
+            DATABASE_ID!,
+            MENTEE_COLLECTION_ID!,
+            [Query.equal('userId', userId)]
+        );
+
+        return parseStringify(mentees.documents[0]);
     } catch (e) {
         console.log(e)
     }

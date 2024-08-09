@@ -21,8 +21,6 @@ declare interface User extends CreateUserParams {
 declare interface RegisterUserParams extends CreateUserParams {
   userId: string;
   gender: Gender;
-  appointmentType: string
-  reason: string
 }
 
 declare type CreateAppointmentParams = {

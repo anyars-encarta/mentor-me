@@ -18,12 +18,6 @@ export const MenteeFormValidation = z.object({
       .string()
       .refine((phone) => /^\+\d{10,15}$/.test(phone), "Invalid phone number"),
     gender: z.enum(["Male", "Female", "Other"]),
-    appointmentType: z
-    .string()
-    .min(2, "Appointment Type must be provided"),
-    reason: z
-    .string()
-    .min(2, "Reason for Appointment must be provided"),
   });
   
   export const CreateAppointmentSchema = z.object({
