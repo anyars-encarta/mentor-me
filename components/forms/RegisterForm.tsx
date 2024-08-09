@@ -44,7 +44,7 @@ const RegisterForm = ({ user }: { user: User }) => {
             break;
 
         case 'create':
-            buttonLabel = 'Create Appointment';
+            buttonLabel = 'Book Appointment';
             break;
 
         case 'schedule':
