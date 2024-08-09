@@ -5,19 +5,19 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Form, FormControl } from "@/components/ui/form"
 import CustomFormField from "../CustomFormField"
-import SubmitButton from "../SubmitButton"
 import { useState } from "react"
-import { MenteeFormValidation } from "@/lib/validation"
+import { getAppointmentSchema, MenteeFormValidation } from "@/lib/validation"
 import { registerMentee } from "@/lib/actions/mentee.actions"
 import { FormFieldType } from "./MentorForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { GenderOptions, MenteeFormDefaultValues } from "@/constatnts"
 import { Label } from "../ui/label"
-import { useRouter } from "next/navigation"
 import NewAppointmentForm from "@/app/mentees/[userId]/new-appointment/NewAppointmentForm"
+import { createAppointment } from "@/lib/actions/appointment.actions"
+import { useRouter } from "next/navigation"
 
 const RegisterForm = ({ user }: { user: User }) => {
-    // const router = useRouter();
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<z.infer<typeof MenteeFormValidation>>({
@@ -30,27 +30,88 @@ const RegisterForm = ({ user }: { user: User }) => {
             appointmentType: '',
             schedule: new Date(),
             reason: '',
-            additionalComments: ''
+            additionalComments: '',
+            cancellationReason: '',
         },
     });
 
+    let type = 'create' || 'cancel' || 'schedule';
+    let buttonLabel;
+
+    switch (type) {
+        case 'cancel':
+            buttonLabel = 'Cancel Appointnment';
+            break;
+
+        case 'create':
+            buttonLabel = 'Create Appointment';
+            break;
+
+        case 'schedule':
+            buttonLabel = 'Schedule Appointment';
+            break;
+        default:
+            break;
+    }
+
     const onSubmit = async (values: z.infer<typeof MenteeFormValidation>) => {
-        setIsLoading(true)
+        setIsLoading(true);
+
+        let status;
+
+        switch (type) {
+            case 'schedule':
+                status = 'scheduled';
+                break;
+
+            case 'cancel':
+                status = 'cancelled';
+                break;
+
+            default:
+                status = 'pending';
+                break;
+        }
 
         try {
+            // Register the mentee first
             const menteeData = {
-                ...values,
+                name: values.name, 
+                email: values.email, 
+                phone: values.phone, 
+                gender: values.gender,
                 userId: user.$id,
+            };
+
+            const registeredMentee = await registerMentee(menteeData);
+            
+            // If mentee registration is successful, proceed with the appointment creation
+            if (registeredMentee?.$id) {
+                const appointmentData = {
+                    userId: user.$id,
+                    mentee: registeredMentee.$id,
+                    appointmentType: values.appointmentType,
+                    schedule: new Date(values.schedule),
+                    reason: values.reason,
+                    additionalComments: values.additionalComments,
+                    cancellationReason: values.cancellationReason,
+                    status: status as Status,
+                };
+
+                const appointment = await createAppointment(appointmentData);
+
+                if (appointment) {
+                    form.reset();
+                    router.push(`/mentees/${user.$id}/appointment/success?appointmentId=${appointment.$id}`)
+                }
             }
 
-            const mentee = await registerMentee(menteeData);
-
-            // if (mentee) router.push('/success');
             setIsLoading(false);
         } catch (e) {
             console.log(e);
+            setIsLoading(false);
         }
-    }
+    };
 
     return (
         <Form {...form}>
@@ -126,6 +187,7 @@ const RegisterForm = ({ user }: { user: User }) => {
                     userId={user.$id}
                     form={form}
                     isLoading={isLoading}
+                    buttonLabel={buttonLabel!}
                 />
             </form>
         </Form>

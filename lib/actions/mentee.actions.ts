@@ -36,7 +36,6 @@ export const getUser = async (userId: string) => {
 };
 
 export const registerMentee = async ({...mentee}: RegisterUserParams) => {
-    console.log('Started Register Mentee Action')
     try {
         const newMentee = await databases.createDocument(
             DATABASE_ID!,

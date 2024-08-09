@@ -1,40 +1,94 @@
-import { AppointmentTypes, MenteeFormDefaultValues } from '@/constatnts'
-import { useForm } from 'react-hook-form'
+import { AppointmentTypes } from '@/constatnts'
 import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useState, useEffect } from 'react'
 import { MenteeFormValidation } from '@/lib/validation'
 import CustomFormField from '@/components/CustomFormField'
 import { FormFieldType } from '@/components/forms/MentorForm'
 import { SelectItem } from '@/components/ui/select'
 import { getMentee } from '@/lib/actions/mentee.actions'
 import SubmitButton from '@/components/SubmitButton'
+import { createAppointment } from '@/lib/actions/appointment.actions'
+import { useRouter } from 'next/navigation'
 
-const NewAppointmentForm = async ({
-    userId, type, isLoading, form
+const NewAppointmentForm = ({
+    userId, type, isLoading, buttonLabel, form
 }: {
-    userId: string, isLoading: boolean, type: 'create' | 'cancel' | 'schedule', form: any
+    userId: string, isLoading: boolean, buttonLabel: string, type: 'create' | 'cancel' | 'schedule', form: any
 }) => {
-    const mentee = await getMentee(userId);
+    // const [mentee, setMentee] = useState<any>(null);
+    // const router = useRouter();
+    
+    // useEffect(() => {
+    //     const fetchMentee = async () => {
+    //         const fetchedMentee = await getMentee(userId);
+    //         setMentee(fetchedMentee);
+    //     }
 
-    console.log('Mentee: ', mentee)
+    //     fetchMentee();
+    // }, [userId]);
 
-    let buttonLabel;
+    // console.log('Mentee: ', mentee)
 
-    switch (type) {
-        case 'cancel':
-            buttonLabel = 'Cancel Appointnment';
-            break;
+    // let buttonLabel;
 
-        case 'create':
-            buttonLabel = 'Create Appointment';
-            break;
+    // switch (type) {
+    //     case 'cancel':
+    //         buttonLabel = 'Cancel Appointnment';
+    //         break;
 
-        case 'schedule':
-            buttonLabel = 'Schedule Appointment';
-            break;
-        default:
-            break;
-    }
+    //     case 'create':
+    //         buttonLabel = 'Create Appointment';
+    //         break;
+
+    //     case 'schedule':
+    //         buttonLabel = 'Schedule Appointment';
+    //         break;
+    //     default:
+    //         break;
+    // }
+
+    // const onSubmit = async (values: z.infer<typeof MenteeFormValidation>) => {
+
+    //     let status;
+
+    //     switch (type) {
+    //         case 'schedule':
+    //             status = 'scheduled';
+    //             break;
+
+    //         case 'cancel':
+    //             status = 'cancelled';
+    //             break;
+
+    //         default:
+    //             status: 'Pending';
+    //             break;
+    //     }
+
+    //     try {
+    //         if (type === 'create' && mentee?.$id) {
+    //             const appointmentData = {
+    //                 userId,
+    //                 mentee: mentee.$id,
+    //                 appointmentType: values.appointmentType,
+    //                 schedule: new Date(values.schedule),
+    //                 reason: values.reason,
+    //                 additionalComments: values.additionalComments,
+    //                 status: status as Status,
+    //             }
+
+    //             const appointment = await createAppointment(appointmentData)
+
+    //             if (appointment) {
+    //                 form.reset();
+    //                 router.push(`/mentees/${userId}/appointment/success?appointmentId=${appointment.id}`)
+    //             }
+    //         }
+
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 
     return (
         <>
