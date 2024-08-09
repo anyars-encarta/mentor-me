@@ -17,21 +17,40 @@ import {
     InputOTPSeparator,
     InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { decryptKey, encryptKey } from "@/lib/utils";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react"
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react"
 
 const PasskeyModal = () => {
     const router = useRouter();
+    const path = usePathname();
     const [open, setOpen] = useState(true);
     const [passkey, setPasskey] = useState('');
     const [error, setError] = useState('');
+
+    const encryptedKey = typeof window !== 'undefined' ? window.localStorage.getItem('accessKey') : null;
+
+    useEffect(() => {
+        const accessKey = encryptedKey && decryptKey(encryptedKey);
+
+        if (accessKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
+            setOpen(false)
+            router.push('/admin')
+        } else {
+            setOpen(true);
+        }
+    }, [encryptedKey])
 
     const validatePasskey = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
 
         if (passkey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
+            const encryptedKey = encryptKey(passkey);
+
+            localStorage.setItem('accessKey', encryptedKey);
+
             setOpen(false)
             router.push('/admin')
         } else {
@@ -85,7 +104,7 @@ const PasskeyModal = () => {
                 <AlertDialogFooter>
                     <AlertDialogAction onClick={(e) => validatePasskey(e)}
                         className='shad-primary-btn w-full'
-                        >
+                    >
                         Enter Admin Passkey
                     </AlertDialogAction>
                 </AlertDialogFooter>
