@@ -29,7 +29,7 @@ const Home = () => {
           </div>
 
             <p className='text-center text-dark-600 mt-5 text-xs'>
-              Developed by Encarta Netwroks & Multimedia - +233 24 211 9972, anyarsencarta@gmail.com
+              Developed by Encarta Networks & Multimedia - +233 24 211 9972, anyarsencarta@gmail.com
             </p>
         </div>
       </section>
