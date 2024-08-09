@@ -24,8 +24,13 @@ const Home = () => {
               © 2024 MentorMe
             </p>
 
+
             <Link href='/?admin=true' className='text-green-500'>Admin</Link>
           </div>
+
+            <p className='text-center text-dark-600 mt-5 text-xs'>
+              Developed by Encarta Netwroks & Multimedia - +233 24 211 9972, anyarsencarta@gmail.com
+            </p>
         </div>
       </section>
 
