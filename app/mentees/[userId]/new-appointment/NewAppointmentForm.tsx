@@ -1,19 +1,13 @@
 import { AppointmentTypes } from '@/constatnts'
-import { z } from 'zod'
-import { useState, useEffect } from 'react'
-import { MenteeFormValidation } from '@/lib/validation'
 import CustomFormField from '@/components/CustomFormField'
 import { FormFieldType } from '@/components/forms/MentorForm'
 import { SelectItem } from '@/components/ui/select'
-import { getMentee } from '@/lib/actions/mentee.actions'
 import SubmitButton from '@/components/SubmitButton'
-import { createAppointment } from '@/lib/actions/appointment.actions'
-import { useRouter } from 'next/navigation'
 
 const NewAppointmentForm = ({
     userId, type, isLoading, buttonLabel, form
 }: {
-    userId: string, isLoading: boolean, buttonLabel: string, type: 'create' | 'cancel' | 'schedule', form: any
+    userId: string, isLoading: boolean, buttonLabel: string, type: 'create' | 'cancel' | 'schedule' | 'meet' | 'complete', form: any
 }) => {
 
     return (

@@ -5,8 +5,6 @@ import { getRecentAppointmentList } from '@/lib/actions/appointment.actions'
 import Image from 'next/image'
 import Link from 'next/link'
 
-
-
 const Admin = async () => {
 
     const appointments = await getRecentAppointmentList();
