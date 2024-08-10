@@ -10,7 +10,7 @@ interface StatCardProps {
 
 const StatCard = ({ type, count = 0, label, icon }: StatCardProps) => {
   return (
-    <div className={clsx('stat-card', {
+    <div className={clsx('stat-card cursor-pointer', {
       'bg-appointments': type === 'appointments',
       'bg-pending': type === 'pending',
       'bg-cancelled': type === 'cancelled',

@@ -1,3 +1,4 @@
+import DataTable from '@/components/DataTable'
 import StatCard from '@/components/StatCard'
 import { getRecentAppointmentList } from '@/lib/actions/appointment.actions'
 import Image from 'next/image'
@@ -60,6 +61,8 @@ const Admin = async () => {
                         icon='/assets/icons/check.svg'
                     />
                 </section>
+
+                <DataTable />
             </main>
         </div>
     )
