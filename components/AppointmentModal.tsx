@@ -17,17 +17,67 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import { Form, FormControl } from "@/components/ui/form"
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { MenteeFormValidation } from "@/lib/validation";
+import { AppointmentTypes, MenteeFormDefaultValues } from "@/constatnts";
+import CustomFormField from "./CustomFormField";
+import { FormFieldType } from "./forms/MentorForm";
+import { SelectItem } from "./ui/select";
+import SubmitButton from "./SubmitButton";
 
-const AppointmentModal = () => {
+const AppointmentModal = (data: any) => {
     const [open, setOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const form = useForm<z.infer<typeof MenteeFormValidation>>({
+        resolver: zodResolver(MenteeFormValidation),
+        defaultValues: {
+            ...MenteeFormDefaultValues,
+            name: data.data.name,
+            email: data.data.email,
+            phone: data.phone,
+            appointmentType: '',
+            schedule: new Date(),
+            reason: '',
+            additionalComments: '',
+            cancellationReason: '',
+        },
+    });
 
     const handleSelect = (item: string) => {
         setSelectedItem(item);
         setOpen(true);
     };
+
+    let buttonLabel;
+
+    switch (selectedItem) {
+        case 'cancel':
+            buttonLabel = 'Cancel Appointnment';
+            break;
+
+        case 'meet':
+            buttonLabel = 'Meet Appointment';
+            break;
+
+        case 'schedule':
+            buttonLabel = 'Schedule Appointment';
+            break;
+
+        case 'complete':
+            buttonLabel = 'Complete Appointment';
+            break;
+        default:
+            break;
+    }
+
+    const onSubmit = async (values: z.infer<typeof MenteeFormValidation>) => { };
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -40,22 +90,92 @@ const AppointmentModal = () => {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className='bg-dark-500'>
-                        <DropdownMenuItem className='hover:bg-gray-500 cursor-pointer' onSelect={() => handleSelect("Schedule")}>Schedule</DropdownMenuItem>
-                        <DropdownMenuItem className='hover:bg-gray-500 cursor-pointer' onSelect={() => handleSelect("Meet")}>Meet</DropdownMenuItem>
-                        <DropdownMenuItem className='hover:bg-gray-500 cursor-pointer' onSelect={() => handleSelect("Cancel")}>Cancel</DropdownMenuItem>
-                        <DropdownMenuItem className='hover:bg-gray-500 cursor-pointer' onSelect={() => handleSelect("Complete")}>Complete</DropdownMenuItem>
+                        <DropdownMenuItem className='hover:bg-gray-500 cursor-pointer' onSelect={() => handleSelect("schedule")}>Schedule</DropdownMenuItem>
+                        <DropdownMenuItem className='hover:bg-gray-500 cursor-pointer' onSelect={() => handleSelect("meet")}>Meet</DropdownMenuItem>
+                        <DropdownMenuItem className='hover:bg-gray-500 cursor-pointer' onSelect={() => handleSelect("cancel")}>Cancel</DropdownMenuItem>
+                        <DropdownMenuItem className='hover:bg-gray-500 cursor-pointer' onSelect={() => handleSelect("complete")}>Complete</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </DialogTrigger>
 
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Are you absolutely sure you want to {selectedItem} ?</DialogTitle>
+            <DialogContent className='shad-dialog sm:max-w-md'>
+                <DialogHeader className='mb-4 space-y-3'>
+                    <DialogTitle className='capitalize'>{selectedItem} Appointment</DialogTitle>
                     <DialogDescription>
-                        This action cannot be undone. This will permanently delete your account
-                        and remove your data from our servers.
+                        Please fill in the following details to {selectedItem} an appointment
                     </DialogDescription>
                 </DialogHeader>
+
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 flex-1">
+                        <section className='space-y-4'>
+                            <h1 className='header capitalize'>{selectedItem} Appointment</h1>
+                        </section>
+
+                        {selectedItem !== 'cancel' && (
+                            <>
+                                <CustomFormField
+                                    fieldType={FormFieldType.SELECT}
+                                    control={form.control}
+                                    name='appointmentType'
+                                    label='Appointment Type'
+                                    placeholder='Select Type of Appointment'
+                                >
+                                    {AppointmentTypes.map((appointment, i) => (
+                                        <SelectItem key={appointment + i} value={appointment}>
+                                            {appointment}
+                                        </SelectItem>
+                                    ))}
+                                </CustomFormField>
+
+                                <CustomFormField
+                                    fieldType={FormFieldType.DATE_PICKER}
+                                    control={form.control}
+                                    name='schedule'
+                                    label='Expected appointment date'
+                                    showTimeSelect
+                                    dateFormat='MM/dd/yyyy - h:mm aa'
+                                />
+
+                                <div className='flex flex-col gap-6 xl:flex-row'>
+                                    <CustomFormField
+                                        fieldType={FormFieldType.TEXTAREA}
+                                        control={form.control}
+                                        name='reason'
+                                        label='Reason for Appointment'
+                                        placeholder='Briefly describe the reason for your appointment'
+                                    />
+
+                                    <CustomFormField
+                                        fieldType={FormFieldType.TEXTAREA}
+                                        control={form.control}
+                                        name='additionalComments'
+                                        label='Additional Comments'
+                                        placeholder='Example: I would prefer weekends and probably in the afternoon'
+                                    />
+                                </div>
+                            </>
+                        )}
+
+                        {selectedItem === 'cancel' && (
+                            <CustomFormField
+                                fieldType={FormFieldType.TEXTAREA}
+                                control={form.control}
+                                name='cancellationReason'
+                                label='Reason for Cancellation'
+                                placeholder='Enter reason for cancellation'
+                            />)
+                        }
+
+                        <SubmitButton
+                            isLoading={isLoading}
+                            className={`${selectedItem === 'cancel' ? 'shad-danger-btn' : 'shad-primary-btn'} w-full`}
+                        >
+                            {buttonLabel}
+                        </SubmitButton>
+
+                    </form>
+                </Form>
             </DialogContent>
         </Dialog>
     )

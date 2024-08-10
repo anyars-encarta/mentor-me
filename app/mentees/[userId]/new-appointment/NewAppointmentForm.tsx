@@ -13,82 +13,8 @@ import { useRouter } from 'next/navigation'
 const NewAppointmentForm = ({
     userId, type, isLoading, buttonLabel, form
 }: {
-    userId: string, isLoading: boolean, buttonLabel: string, type: 'create' | 'cancel' | 'schedule' | 'complete', form: any
+    userId: string, isLoading: boolean, buttonLabel: string, type: 'create' | 'cancel' | 'schedule', form: any
 }) => {
-    // const [mentee, setMentee] = useState<any>(null);
-    // const router = useRouter();
-    
-    // useEffect(() => {
-    //     const fetchMentee = async () => {
-    //         const fetchedMentee = await getMentee(userId);
-    //         setMentee(fetchedMentee);
-    //     }
-
-    //     fetchMentee();
-    // }, [userId]);
-
-    // console.log('Mentee: ', mentee)
-
-    // let buttonLabel;
-
-    // switch (type) {
-    //     case 'cancel':
-    //         buttonLabel = 'Cancel Appointnment';
-    //         break;
-
-    //     case 'create':
-    //         buttonLabel = 'Create Appointment';
-    //         break;
-
-    //     case 'schedule':
-    //         buttonLabel = 'Schedule Appointment';
-    //         break;
-    //     default:
-    //         break;
-    // }
-
-    // const onSubmit = async (values: z.infer<typeof MenteeFormValidation>) => {
-
-    //     let status;
-
-    //     switch (type) {
-    //         case 'schedule':
-    //             status = 'scheduled';
-    //             break;
-
-    //         case 'cancel':
-    //             status = 'cancelled';
-    //             break;
-
-    //         default:
-    //             status: 'Pending';
-    //             break;
-    //     }
-
-    //     try {
-    //         if (type === 'create' && mentee?.$id) {
-    //             const appointmentData = {
-    //                 userId,
-    //                 mentee: mentee.$id,
-    //                 appointmentType: values.appointmentType,
-    //                 schedule: new Date(values.schedule),
-    //                 reason: values.reason,
-    //                 additionalComments: values.additionalComments,
-    //                 status: status as Status,
-    //             }
-
-    //             const appointment = await createAppointment(appointmentData)
-
-    //             if (appointment) {
-    //                 form.reset();
-    //                 router.push(`/mentees/${userId}/appointment/success?appointmentId=${appointment.id}`)
-    //             }
-    //         }
-
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // }
 
     return (
         <>

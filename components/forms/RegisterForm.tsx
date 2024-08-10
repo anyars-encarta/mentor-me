@@ -35,7 +35,7 @@ const RegisterForm = ({ user }: { user: User }) => {
         },
     });
 
-    let type = 'create' || 'cancel' || 'schedule' || 'complete';
+    let type = 'create' || 'cancel' || 'schedule' || 'meet' || 'complete';
     let buttonLabel;
 
     switch (type) {
