@@ -6,7 +6,7 @@ import { z } from "zod"
 import { Form, FormControl } from "@/components/ui/form"
 import CustomFormField from "../CustomFormField"
 import { useState } from "react"
-import { getAppointmentSchema, MenteeFormValidation } from "@/lib/validation"
+import { MenteeFormValidation } from "@/lib/validation"
 import { registerMentee } from "@/lib/actions/mentee.actions"
 import { FormFieldType } from "./MentorForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
@@ -35,7 +35,7 @@ const RegisterForm = ({ user }: { user: User }) => {
         },
     });
 
-    let type = 'create' || 'cancel' || 'schedule';
+    let type = 'create' || 'cancel' || 'schedule' || 'complete';
     let buttonLabel;
 
     switch (type) {
@@ -49,6 +49,10 @@ const RegisterForm = ({ user }: { user: User }) => {
 
         case 'schedule':
             buttonLabel = 'Schedule Appointment';
+            break;
+
+        case 'complete':
+            buttonLabel = 'Complete Appointment';
             break;
         default:
             break;
@@ -68,6 +72,10 @@ const RegisterForm = ({ user }: { user: User }) => {
                 status = 'cancelled';
                 break;
 
+            case 'complete':
+                status = 'completed';
+                break;
+
             default:
                 status = 'pending';
                 break;
@@ -76,15 +84,15 @@ const RegisterForm = ({ user }: { user: User }) => {
         try {
             // Register the mentee first
             const menteeData = {
-                name: values.name, 
-                email: values.email, 
-                phone: values.phone, 
+                name: values.name,
+                email: values.email,
+                phone: values.phone,
                 gender: values.gender,
                 userId: user.$id,
             };
 
             const registeredMentee = await registerMentee(menteeData);
-            
+
             // If mentee registration is successful, proceed with the appointment creation
             if (registeredMentee?.$id) {
                 const appointmentData = {

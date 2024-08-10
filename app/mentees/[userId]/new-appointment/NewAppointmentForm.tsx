@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation'
 const NewAppointmentForm = ({
     userId, type, isLoading, buttonLabel, form
 }: {
-    userId: string, isLoading: boolean, buttonLabel: string, type: 'create' | 'cancel' | 'schedule', form: any
+    userId: string, isLoading: boolean, buttonLabel: string, type: 'create' | 'cancel' | 'schedule' | 'complete', form: any
 }) => {
     // const [mentee, setMentee] = useState<any>(null);
     // const router = useRouter();
