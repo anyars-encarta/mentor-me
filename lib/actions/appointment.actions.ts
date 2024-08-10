@@ -66,6 +66,7 @@ export const getRecentAppointmentList = async () => {
             ...counts,
             documents: appointments.documents,
         }
+        
         return parseStringify(data);
     } catch (e) {
         console.log(e)
