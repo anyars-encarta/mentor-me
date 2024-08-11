@@ -42,10 +42,10 @@ const AppointmentModal = (data: any) => {
             name: data.data.name,
             email: data.data.email,
             phone: data.phone,
-            appointmentType: '',
-            schedule: new Date(),
-            reason: '',
-            additionalComments: '',
+            appointmentType: data.data.appointmentType,
+            schedule: new Date(data.data.schedule),
+            reason: data.data.reason,
+            additionalComments: data.data.additionalComments,
             cancellationReason: '',
         },
     });
@@ -77,7 +77,11 @@ const AppointmentModal = (data: any) => {
             break;
     }
 
-    const onSubmit = async (values: z.infer<typeof MenteeFormValidation>) => { };
+    const onSubmit = async (values: z.infer<typeof MenteeFormValidation>) => { 
+        setIsLoading(true);
+    };
+
+    console.log('Modal Data: ', data)
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -100,18 +104,14 @@ const AppointmentModal = (data: any) => {
 
             <DialogContent className='shad-dialog sm:max-w-md'>
                 <DialogHeader className='mb-4 space-y-3'>
-                    <DialogTitle className='capitalize'>{selectedItem} Appointment</DialogTitle>
+                    <DialogTitle className='header capitalize'>{selectedItem} Appointment</DialogTitle>
                     <DialogDescription>
-                        Please fill in the following details to {selectedItem} an appointment
+                        Please fill in the following details to {selectedItem} a <span className='text-green-500'>{data.data.appointmentType}</span> appointment for <span className='text-green-500'>{data.data.mentee.name}</span>
                     </DialogDescription>
                 </DialogHeader>
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 flex-1">
-                        <section className='space-y-4'>
-                            <h1 className='header capitalize'>{selectedItem} Appointment</h1>
-                        </section>
-
                         {selectedItem !== 'cancel' && (
                             <>
                                 <CustomFormField
