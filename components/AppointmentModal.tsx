@@ -19,9 +19,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { Form, FormControl } from "@/components/ui/form"
+import { Form } from "@/components/ui/form"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MenteeFormValidation } from "@/lib/validation";
 import { AppointmentTypes, MenteeFormDefaultValues } from "@/constatnts";
@@ -34,6 +34,11 @@ const AppointmentModal = (data: any) => {
     const [open, setOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+useEffect(() => {
+    setIsMounted(true);
+}, []);
 
     const form = useForm<z.infer<typeof MenteeFormValidation>>({
         resolver: zodResolver(MenteeFormValidation),
@@ -83,6 +88,8 @@ const AppointmentModal = (data: any) => {
 
     console.log('Modal Data: ', data)
 
+    if (!isMounted) return null;
+    
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger>
