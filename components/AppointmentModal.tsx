@@ -24,34 +24,32 @@ import { Form } from "@/components/ui/form"
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MenteeFormValidation } from "@/lib/validation";
-import { AppointmentTypes, MenteeFormDefaultValues } from "@/constatnts";
+import { AppointmentTypes } from "@/constatnts";
 import CustomFormField from "./CustomFormField";
 import { FormFieldType } from "./forms/MentorForm";
 import { SelectItem } from "./ui/select";
 import SubmitButton from "./SubmitButton";
+import { updateAppointment } from "@/lib/actions/appointment.actions";
 
-const AppointmentModal = (data: any) => {
+const AppointmentModal = ({ data }: { data: any }) => {
     const [open, setOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState('');
+    const [type, setType] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [isMounted, setIsMounted] = useState(false);
+    const [isMounted, setIsMounted] = useState(true);
 
-useEffect(() => {
-    setIsMounted(true);
-}, []);
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const form = useForm<z.infer<typeof MenteeFormValidation>>({
         resolver: zodResolver(MenteeFormValidation),
         defaultValues: {
-            ...MenteeFormDefaultValues,
-            name: data.data.name,
-            email: data.data.email,
-            phone: data.phone,
-            appointmentType: data.data.appointmentType,
-            schedule: new Date(data.data.schedule),
-            reason: data.data.reason,
-            additionalComments: data.data.additionalComments,
-            cancellationReason: '',
+            appointmentType: data ? data.appointmentType : '',
+            schedule: data ? new Date(data.schedule) : new Date(),
+            reason: data ? data.reason : '',
+            additionalComments: data ? data.additionalComments : '',
+            cancellationReason: data ? data.cancellationReason : '',
         },
     });
 
@@ -59,6 +57,20 @@ useEffect(() => {
         setSelectedItem(item);
         setOpen(true);
     };
+
+    useEffect(() => {
+        if (selectedItem === 'cancel') {
+            setType('cancelled')
+        } else if (selectedItem === 'meet') {
+            setType('met')
+        } else if (selectedItem === 'schedule') {
+            setType('scheduled')
+        } else if (selectedItem === 'complete') {
+            setType('completed')
+        };
+    }, [selectedItem]);
+
+    console.log('Selected Item: ', selectedItem);
 
     let buttonLabel;
 
@@ -82,14 +94,38 @@ useEffect(() => {
             break;
     }
 
-    const onSubmit = async (values: z.infer<typeof MenteeFormValidation>) => { 
+    const onSubmit = async (values: z.infer<typeof MenteeFormValidation>) => {
+        console.log('Selected type: ', type)
         setIsLoading(true);
+
+        try {
+            if (selectedItem === 'schedule') {
+                const appointmentToUpdate = {
+                    userId: data.userId,
+                    appointmentId: data?.$id,
+                    appointment: {
+                        appointmentType: values?.appointmentType,
+                        schedule: new Date(values?.schedule),
+                        status: status as Status,
+                        cancellationReason: values?.cancellationReason,
+                    },
+                    type
+                }
+
+                const updatedAppointment = await updateAppointment(appointmentToUpdate);
+
+                if (updatedAppointment) {
+                    setOpen && setOpen(false)
+                    form.reset();
+                }
+            }
+        } catch (e) {
+            console.log(e)
+        }
     };
 
-    console.log('Modal Data: ', data)
-
     if (!isMounted) return null;
-    
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger>
@@ -113,7 +149,7 @@ useEffect(() => {
                 <DialogHeader className='mb-4 space-y-3'>
                     <DialogTitle className='header capitalize'>{selectedItem} Appointment</DialogTitle>
                     <DialogDescription>
-                        Please fill in the following details to {selectedItem} a <span className='text-green-500'>{data.data.appointmentType}</span> appointment for <span className='text-green-500'>{data.data.mentee.name}</span>
+                        Please fill in the following details to {selectedItem} a <span className='text-green-500'>{data.appointmentType}</span> appointment for <span className='text-green-500'>{data.mentee.name}</span>
                     </DialogDescription>
                 </DialogHeader>
 
