@@ -64,7 +64,19 @@ export const columns: ColumnDef<Appointment>[] = [
         cell: ({ row: { original: data } }) => {
             return (
                 <div className='flex gap-1'>
-                    <AppointmentModal data={data} />
+                    <AppointmentModal
+                        type='schedule'
+                        menteeId={data.mentee.$id}
+                        userId={data.userId}
+                        appointment={data}
+                    />
+                    
+                    <AppointmentModal
+                        type='cancel'
+                        menteeId={data.mentee.$id}
+                        userId={data.userId}
+                        appointment={data}
+                    />
                 </div>
             )
         },

@@ -4,17 +4,17 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Form, FormControl } from "@/components/ui/form"
-import CustomFormField from "../CustomFormField"
+import CustomFormField, { FormFieldType } from "../CustomFormField"
 import { useState } from "react"
 import { MenteeFormValidation } from "@/lib/validation"
 import { registerMentee } from "@/lib/actions/mentee.actions"
-import { FormFieldType } from "./MentorForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { GenderOptions, MenteeFormDefaultValues } from "@/constatnts"
 import { Label } from "../ui/label"
 import NewAppointmentForm from "@/app/mentees/[userId]/new-appointment/NewAppointmentForm"
 import { createAppointment } from "@/lib/actions/appointment.actions"
 import { useRouter } from "next/navigation"
+
 
 const RegisterForm = ({ user }: { user: User }) => {
     const router = useRouter();

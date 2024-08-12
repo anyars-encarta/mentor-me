@@ -41,11 +41,11 @@ export const CreateAppointmentSchema = z.object({
   cancellationReason: z.string().optional(),
 });
 
-export const ScheduleAppointmentSchema = z.object({
-  primaryPhysician: z.string().min(2, "Select at least one doctor"),
+export const AppointmentFormValidation = z.object({
+  appointmentType: z.string().min(2, "Select at least one appointment type"),
   schedule: z.coerce.date(),
   reason: z.string().optional(),
-  note: z.string().optional(),
+  additionalComments: z.string().optional(),
   cancellationReason: z.string().optional(),
 });
 
@@ -67,6 +67,6 @@ export function getAppointmentSchema(type: string) {
     case "cancel":
       return CancelAppointmentSchema;
     default:
-      return ScheduleAppointmentSchema;
+      return AppointmentFormValidation;
   }
 };

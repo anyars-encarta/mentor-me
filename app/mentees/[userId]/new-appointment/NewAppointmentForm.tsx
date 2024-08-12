@@ -1,6 +1,5 @@
 import { AppointmentTypes } from '@/constatnts'
-import CustomFormField from '@/components/CustomFormField'
-import { FormFieldType } from '@/components/forms/MentorForm'
+import CustomFormField, { FormFieldType } from '@/components/CustomFormField'
 import { SelectItem } from '@/components/ui/select'
 import SubmitButton from '@/components/SubmitButton'
 

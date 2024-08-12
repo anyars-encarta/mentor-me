@@ -9,127 +9,132 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { MoreHorizontal } from "lucide-react"
+// import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-import { Form } from "@/components/ui/form"
+// import {
+//     DropdownMenu,
+//     DropdownMenuContent,
+//     DropdownMenuItem,
+//     DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+// import { zodResolver } from "@hookform/resolvers/zod"
+// import { z } from "zod"
+// import { Form } from "@/components/ui/form"
 
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { MenteeFormValidation } from "@/lib/validation";
-import { AppointmentTypes } from "@/constatnts";
-import CustomFormField from "./CustomFormField";
-import { FormFieldType } from "./forms/MentorForm";
-import { SelectItem } from "./ui/select";
-import SubmitButton from "./SubmitButton";
-import { updateAppointment } from "@/lib/actions/appointment.actions";
+import { useState } from "react";
+import { Appointment } from "@/types/appwrite.types";
+import AppointmentForm from "./AppointmentForm";
+// import { useForm } from "react-hook-form";
+// import { MenteeFormValidation } from "@/lib/validation";
+// import { AppointmentTypes } from "@/constatnts";
+// import CustomFormField from "./CustomFormField";
+// import { FormFieldType } from "./forms/MentorForm";
+// import { SelectItem } from "./ui/select";
+// import SubmitButton from "./SubmitButton";
+// import { updateAppointment } from "@/lib/actions/appointment.actions";
 
-const AppointmentModal = ({ data }: { data: any }) => {
+const AppointmentModal = ({ type, menteeId, userId, appointment }: {
+    type: 'schedule' | 'cancel' | 'meet' | 'complete',
+    menteeId: string,
+    userId: string,
+    appointment: Appointment,
+}) => {
     const [open, setOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState('');
-    const [type, setType] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [isMounted, setIsMounted] = useState(true);
+    // const [selectedItem, setSelectedItem] = useState('');
+    // const [type, setType] = useState('');
+    // const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    // const form = useForm<z.infer<typeof MenteeFormValidation>>({
+    //     resolver: zodResolver(MenteeFormValidation),
+    //     defaultValues: {
+    //         appointmentType: data ? data.appointmentType : '',
+    //         schedule: data ? new Date(data.schedule) : new Date(),
+    //         reason: data ? data.reason : '',
+    //         additionalComments: data ? data.additionalComments : '',
+    //         cancellationReason: data ? data.cancellationReason : '',
+    //     },
+    // });
 
-    const form = useForm<z.infer<typeof MenteeFormValidation>>({
-        resolver: zodResolver(MenteeFormValidation),
-        defaultValues: {
-            appointmentType: data ? data.appointmentType : '',
-            schedule: data ? new Date(data.schedule) : new Date(),
-            reason: data ? data.reason : '',
-            additionalComments: data ? data.additionalComments : '',
-            cancellationReason: data ? data.cancellationReason : '',
-        },
-    });
+    // const handleSelect = (item: string) => {
+    //     setSelectedItem(item);
+    //     setOpen(true);
+    // };
 
-    const handleSelect = (item: string) => {
-        setSelectedItem(item);
-        setOpen(true);
-    };
+    // useEffect(() => {
+    //     if (selectedItem === 'cancel') {
+    //         setType('cancelled')
+    //     } else if (selectedItem === 'meet') {
+    //         setType('met')
+    //     } else if (selectedItem === 'schedule') {
+    //         setType('scheduled')
+    //     } else if (selectedItem === 'complete') {
+    //         setType('completed')
+    //     };
+    // }, [selectedItem]);
 
-    useEffect(() => {
-        if (selectedItem === 'cancel') {
-            setType('cancelled')
-        } else if (selectedItem === 'meet') {
-            setType('met')
-        } else if (selectedItem === 'schedule') {
-            setType('scheduled')
-        } else if (selectedItem === 'complete') {
-            setType('completed')
-        };
-    }, [selectedItem]);
+    // console.log('Selected Item: ', selectedItem);
 
-    console.log('Selected Item: ', selectedItem);
+    // let buttonLabel;
 
-    let buttonLabel;
+    // switch (selectedItem) {
+    //     case 'cancel':
+    //         buttonLabel = 'Cancel Appointnment';
+    //         break;
 
-    switch (selectedItem) {
-        case 'cancel':
-            buttonLabel = 'Cancel Appointnment';
-            break;
+    //     case 'meet':
+    //         buttonLabel = 'Meet Appointment';
+    //         break;
 
-        case 'meet':
-            buttonLabel = 'Meet Appointment';
-            break;
+    //     case 'schedule':
+    //         buttonLabel = 'Schedule Appointment';
+    //         break;
 
-        case 'schedule':
-            buttonLabel = 'Schedule Appointment';
-            break;
+    //     case 'complete':
+    //         buttonLabel = 'Complete Appointment';
+    //         break;
+    //     default:
+    //         break;
+    // }
 
-        case 'complete':
-            buttonLabel = 'Complete Appointment';
-            break;
-        default:
-            break;
-    }
+    // const onSubmit = async (values: z.infer<typeof MenteeFormValidation>) => {
+    //     console.log('Selected type: ', type)
+    //     setIsLoading(true);
 
-    const onSubmit = async (values: z.infer<typeof MenteeFormValidation>) => {
-        console.log('Selected type: ', type)
-        setIsLoading(true);
+    //     try {
+    //         if (selectedItem === 'schedule') {
+    //             const appointmentToUpdate = {
+    //                 userId: data.userId,
+    //                 appointmentId: data?.$id,
+    //                 appointment: {
+    //                     appointmentType: values?.appointmentType,
+    //                     schedule: new Date(values?.schedule),
+    //                     status: status as Status,
+    //                     cancellationReason: values?.cancellationReason,
+    //                 },
+    //                 type
+    //             }
 
-        try {
-            if (selectedItem === 'schedule') {
-                const appointmentToUpdate = {
-                    userId: data.userId,
-                    appointmentId: data?.$id,
-                    appointment: {
-                        appointmentType: values?.appointmentType,
-                        schedule: new Date(values?.schedule),
-                        status: status as Status,
-                        cancellationReason: values?.cancellationReason,
-                    },
-                    type
-                }
+    //             const updatedAppointment = await updateAppointment(appointmentToUpdate);
 
-                const updatedAppointment = await updateAppointment(appointmentToUpdate);
+    //             if (updatedAppointment) {
+    //                 setOpen && setOpen(false)
+    //                 form.reset();
+    //             }
+    //         }
+    //     } catch (e) {
+    //         console.log(e)
+    //     }
+    // };
 
-                if (updatedAppointment) {
-                    setOpen && setOpen(false)
-                    form.reset();
-                }
-            }
-        } catch (e) {
-            console.log(e)
-        }
-    };
+    // if (!isMounted) return null;
 
-    if (!isMounted) return null;
+    console.log('Appointment: ', appointment);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger>
-                <DropdownMenu>
+            <DialogTrigger asChild>
+                <Button variant='ghost' className={`capitalize ${type === 'schedule' && 'text-green-500'}`}>{type}</Button>
+                {/* <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0 text-center ml-6">
                             <span className="sr-only">Open menu</span>
@@ -142,18 +147,25 @@ const AppointmentModal = ({ data }: { data: any }) => {
                         <DropdownMenuItem className='hover:bg-gray-500 cursor-pointer' onSelect={() => handleSelect("cancel")}>Cancel</DropdownMenuItem>
                         <DropdownMenuItem className='hover:bg-gray-500 cursor-pointer' onSelect={() => handleSelect("complete")}>Complete</DropdownMenuItem>
                     </DropdownMenuContent>
-                </DropdownMenu>
+                </DropdownMenu> */}
             </DialogTrigger>
 
             <DialogContent className='shad-dialog sm:max-w-md'>
                 <DialogHeader className='mb-4 space-y-3'>
-                    <DialogTitle className='header capitalize'>{selectedItem} Appointment</DialogTitle>
+                    <DialogTitle className='header capitalize'>{type} Appointment</DialogTitle>
                     <DialogDescription>
-                        Please fill in the following details to {selectedItem} a <span className='text-green-500'>{data.appointmentType}</span> appointment for <span className='text-green-500'>{data.mentee.name}</span>
+                        Please fill in the following details to {type} an appointment.
                     </DialogDescription>
                 </DialogHeader>
 
-                <Form {...form}>
+                <AppointmentForm
+                    userId={userId}
+                    menteeId={menteeId}
+                    // type={type}
+                    appointment={appointment}
+                    setOpen={setOpen}
+                />
+                {/* <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 flex-1">
                         {selectedItem !== 'cancel' && (
                             <>
@@ -218,7 +230,7 @@ const AppointmentModal = ({ data }: { data: any }) => {
                         </SubmitButton>
 
                     </form>
-                </Form>
+                </Form> */}
             </DialogContent>
         </Dialog>
     )
