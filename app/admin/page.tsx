@@ -1,21 +1,13 @@
-// 'use client';
-
+import CloseAdmin from '@/components/CloseAdmin'
 import StatCard from '@/components/StatCard'
 import { columns } from '@/components/table/columns'
 import { DataTable } from '@/components/table/DataTable'
 import { getRecentAppointmentList } from '@/lib/actions/appointment.actions'
 import Image from 'next/image'
 import Link from 'next/link'
-// import { useRouter } from 'next/navigation'
 
 const Admin = async () => {
-    // const router = useRouter();
     const appointments = await getRecentAppointmentList();
-
-    // const handleExitAdmin = () => {
-    //     localStorage.removeItem('accessKey');
-    //     router.push('/')
-    // };
 
     return (
         <div className='mx-auto flex max-w-7xl flex-col space-y-14'>
@@ -32,14 +24,7 @@ const Admin = async () => {
 
                 <div className='flex gap-2 items-center'>
                     <p className='text-16-semibold'>Admin Dashboard</p>
-                    <Image
-                        src='/assets/icons/power.png'
-                        height={20}
-                        width={20}
-                        alt='logo'
-                        className='size-6 object-cover rounded-full cursor-pointer'
-                        // onClick={handleExitAdmin}
-                    />
+                    <CloseAdmin />
                 </div>
 
             </header>
