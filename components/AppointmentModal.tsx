@@ -27,7 +27,6 @@ const AppointmentModal = ({ type, menteeId, userId, appointment, trigger }: {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 {trigger}
-                {/* <Button variant='ghost' className={`capitalize ${type === 'schedule' && 'text-green-500'}`}>{type}</Button> */}
             </DialogTrigger>
 
             <DialogContent className='shad-dialog sm:max-w-md'>
