@@ -7,7 +7,7 @@ import { Form } from "@/components/ui/form"
 import CustomFormField, { FormFieldType } from "../CustomFormField"
 import SubmitButton from "../SubmitButton"
 import { useState } from "react"
-import { MenteeFormValidation } from "@/lib/validation"
+import { AppointmentFormValidation, MenteeFormValidation } from "@/lib/validation"
 import { useRouter } from "next/navigation"
 import { Appointment } from "@/types/appwrite.types"
 import { AppointmentTypes } from "@/constatnts"
@@ -16,20 +16,21 @@ import { updateAppointment } from "@/lib/actions/appointment.actions"
 
 
 const UpdateAppointment = ({
-    type, menteeId, userId, appointment
+    type, menteeId, userId, appointment, setOpen
 }: {
     type: 'create' | 'schedule' | 'cancel' | 'meet' | 'complete',
     menteeId: string,
     userId: string,
-    appointment: Appointment
+    appointment?: Appointment,
+    setOpen: (open: boolean) => void,
 }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     console.log('The Appointment: ', appointment)
 
-    const form = useForm<z.infer<typeof MenteeFormValidation>>({
-        resolver: zodResolver(MenteeFormValidation),
+    const form = useForm<z.infer<typeof AppointmentFormValidation>>({
+        resolver: zodResolver(AppointmentFormValidation),
         defaultValues: {
             appointmentType: appointment ? appointment.appointmentType : '',
             schedule: appointment ? new Date(appointment.schedule) : new Date(),
@@ -65,7 +66,7 @@ const UpdateAppointment = ({
             break;
     }
 
-    const onSubmit = async (values: z.infer<typeof MenteeFormValidation>) => {
+    const onSubmit = async (values: z.infer<typeof AppointmentFormValidation>) => {
         setIsLoading(true)
 
         try {

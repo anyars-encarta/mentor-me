@@ -3,7 +3,6 @@ import { APPOINTMENT_COLLECTION_ID, DATABASE_ID, databases } from "../appwrite.c
 import { parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
 import { revalidatePath } from "next/cache";
-import { CreateAppointmentParams, UpdateAppointmentParams } from "@/types";
 
 export const createAppointment = async (appointment: CreateAppointmentParams) => {
     try {

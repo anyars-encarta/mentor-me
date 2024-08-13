@@ -6,6 +6,7 @@ import StatusBadge from "../StatusBadge"
 import { Appointment } from "@/types/appwrite.types"
 import { formatDateTime } from "@/lib/utils"
 import AppointmentModal from "../AppointmentModal"
+import Image from "next/image"
 
 export const columns: ColumnDef<Appointment>[] = [
     {
@@ -63,19 +64,65 @@ export const columns: ColumnDef<Appointment>[] = [
         header: () => <div className='pl-4'>Actions</div>,
         cell: ({ row: { original: data } }) => {
             return (
-                <div className='flex gap-1'>
+                <div className='flex gap-2'>
                     <AppointmentModal
                         type='schedule'
                         menteeId={data.mentee.$id}
                         userId={data.userId}
                         appointment={data}
+                        trigger={
+                            <Image
+                                src='/assets/icons/appointments.svg'
+                                height={16}
+                                width={16}
+                                alt='schedule'
+                                className=' size-6 w-fit cursor-pointer' />
+                        }
                     />
-                    
+
                     <AppointmentModal
                         type='cancel'
                         menteeId={data.mentee.$id}
                         userId={data.userId}
                         appointment={data}
+                        trigger={
+                            <Image
+                                src='/assets/icons/cancelled.svg'
+                                height={16}
+                                width={16}
+                                alt='cancel'
+                                className=' size-6 w-fit cursor-pointer' />
+                        }
+                    />
+
+                    <AppointmentModal
+                        type='meet'
+                        menteeId={data.mentee.$id}
+                        userId={data.userId}
+                        appointment={data}
+                        trigger={
+                            <Image
+                                src='/assets/icons/meet.svg'
+                                height={16}
+                                width={16}
+                                alt='meet'
+                                className=' size-6 w-fit cursor-pointer' />
+                        }
+                    />
+
+                    <AppointmentModal
+                        type='complete'
+                        menteeId={data.mentee.$id}
+                        userId={data.userId}
+                        appointment={data}
+                        trigger={
+                            <Image
+                                src='/assets/icons/check.svg'
+                                height={16}
+                                width={16}
+                                alt='cancel'
+                                className=' size-6 w-fit cursor-pointer' />
+                        }
                     />
                 </div>
             )
