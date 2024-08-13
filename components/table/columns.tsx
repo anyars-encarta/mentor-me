@@ -61,7 +61,7 @@ export const columns: ColumnDef<Appointment>[] = [
     },
     {
         id: "actions",
-        header: () => <div className='pl-4'>Actions</div>,
+        header: () => <div>Actions</div>,
         cell: ({ row: { original: data } }) => {
             return (
                 <div className='flex gap-2'>
