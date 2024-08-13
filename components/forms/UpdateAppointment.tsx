@@ -92,8 +92,9 @@ const UpdateAppointment = ({
         }
 
         try {
-            if (type === 'schedule' && menteeId) {
-                console.log('Updating appointment')
+            if (type === 'meet' && menteeId) {
+                console.log('User are about to start a virtual meeting')
+            } else {
                 const appointmentToUpdate = {
                     userId,
                     appointmentId: appointment?.$id!,
@@ -108,20 +109,12 @@ const UpdateAppointment = ({
                     type,
                 }
 
-                console.log('Appointment to Update: ', appointmentToUpdate)
                 const updatedAppointed = await updateAppointment(appointmentToUpdate);
-                
-                console.log('Updated Appointment', updatedAppointed)
+
                 if (updatedAppointed) {
                     setOpen && setOpen(false);
                     form.reset();
                 }
-            } else if (type === 'cancel' && menteeId) {
-
-            } else if (type === 'meet' && menteeId) {
-
-            } else if (type === 'complete' && menteeId) {
-
             }
         } catch (e) {
             console.log(e);

@@ -1,3 +1,5 @@
+'use server'
+
 import { ID, Query } from "node-appwrite";
 import { APPOINTMENT_COLLECTION_ID, DATABASE_ID, databases } from "../appwrite.config";
 import { parseStringify } from "../utils";
@@ -41,7 +43,6 @@ export const getRecentAppointmentList = async () => {
             [Query.orderDesc('$createdAt')]
         );
 
-        console.log('Appoinrments from function', appointments)
         const initialCounts = {
             scheduledCount: 0,
             pendingCount: 0,
@@ -50,10 +51,10 @@ export const getRecentAppointmentList = async () => {
         }
 
         const counts = (appointments.documents as Appointment[]).reduce((acc, appointment) => {
-            if (appointment.status === 'scheduled') {
-                acc.scheduledCount += 1;
-            } else if (appointment.status === 'pending') {
+            if (appointment.status === 'pending') {
                 acc.pendingCount += 1;
+            } else if (appointment.status === 'scheduled') {
+                acc.scheduledCount += 1;
             } else if (appointment.status === 'cancelled') {
                 acc.cancelledCount += 1;
             } else if (appointment.status === 'completed') {
@@ -68,14 +69,14 @@ export const getRecentAppointmentList = async () => {
             ...counts,
             documents: appointments.documents,
         }
-        
+
         return parseStringify(data);
     } catch (e) {
         console.log(e)
     }
 }
 
-export const updateAppointment = async({ appointmentId, userId, appointment, type}: UpdateAppointmentParams) => {
+export const updateAppointment = async ({ appointmentId, userId, appointment, type }: UpdateAppointmentParams) => {
     try {
         const updatedAppointment = await databases.updateDocument(
             DATABASE_ID!,
@@ -83,7 +84,7 @@ export const updateAppointment = async({ appointmentId, userId, appointment, typ
             appointmentId,
             appointment
         )
-
+        
         if (!updatedAppointment) {
             throw new Error('Appointment not found')
         }

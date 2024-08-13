@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import StatCard from '@/components/StatCard'
 import { columns } from '@/components/table/columns'
@@ -6,18 +6,16 @@ import { DataTable } from '@/components/table/DataTable'
 import { getRecentAppointmentList } from '@/lib/actions/appointment.actions'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 
 const Admin = async () => {
-    const router = useRouter();
+    // const router = useRouter();
     const appointments = await getRecentAppointmentList();
 
-    console.log('List Appointments: ', appointments);
-
-    const handleExitAdmin = () => {
-        localStorage.removeItem('accessKey');
-        router.push('/')
-    };
+    // const handleExitAdmin = () => {
+    //     localStorage.removeItem('accessKey');
+    //     router.push('/')
+    // };
 
     return (
         <div className='mx-auto flex max-w-7xl flex-col space-y-14'>
@@ -40,7 +38,7 @@ const Admin = async () => {
                         width={20}
                         alt='logo'
                         className='size-6 object-cover rounded-full cursor-pointer'
-                        onClick={handleExitAdmin}
+                        // onClick={handleExitAdmin}
                     />
                 </div>
 
@@ -55,7 +53,7 @@ const Admin = async () => {
                 <section className='admin-stat'>
                     <StatCard
                         type='appointments'
-                        count={appointments.totalCount}
+                        count={appointments.scheduledCount}
                         label='Scheduled appointments'
                         icon='/assets/icons/appointments.svg'
                     />
