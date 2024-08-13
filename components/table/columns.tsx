@@ -18,13 +18,15 @@ export const columns: ColumnDef<Appointment>[] = [
     {
         header: 'ID',
         cell: ({ row }) => <p className='text-14-medium'>{row.index + 1}</p>,
+        enableColumnFilter: false,
     },
     {
         accessorKey: 'mentee',
         header: 'Mentee',
         cell: ({ row }) => {
             return <p className='text-14-medium'>{row.original.mentee.name}</p>
-        }
+        },
+        enableColumnFilter: true,
     },
     {
         accessorKey: "status",
@@ -34,6 +36,7 @@ export const columns: ColumnDef<Appointment>[] = [
                 <StatusBadge status={row.original.status} />
             </div>
         ),
+        enableColumnFilter: true,
     },
     {
         accessorKey: "schedule",
@@ -42,28 +45,32 @@ export const columns: ColumnDef<Appointment>[] = [
             <p className='text-14-medium'>
                 {formatDateTime(row.original.schedule).dateTime}
             </p>
-        )
+        ),
+        enableColumnFilter: true,
     },
     {
         accessorKey: 'appointmentType',
         header: 'Appointment Type',
         cell: ({ row }) => {
             return <p className='text-14-medium'>{row.original.appointmentType}</p>
-        }
+        },
+        enableColumnFilter: true,
     },
     {
         accessorKey: 'email',
         header: 'Email Address',
         cell: ({ row }) => {
             return <p className='text-14-medium'>{row.original.mentee.email}</p>
-        }
+        },
+        enableColumnFilter: true,
     },
     {
         accessorKey: 'phone',
         header: 'Phone Contact',
         cell: ({ row }) => {
             return <p className='text-14-medium'>{row.original.mentee.phone}</p>
-        }
+        },
+        enableColumnFilter: true,
     },
     {
         id: "actions",

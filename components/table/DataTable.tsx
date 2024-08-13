@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -20,7 +21,6 @@ import {
 } from "@/components/ui/table"
 import { Button } from "../ui/button"
 import { Input } from "@/components/ui/input"
-import React from "react"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -32,10 +32,8 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
 
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+
   const table = useReactTable({
     data,
     columns,
@@ -48,7 +46,7 @@ export function DataTable<TData, TValue>({
     state: {
       columnFilters,
     },
-  })
+  });
 
   return (
     <div>
@@ -56,10 +54,10 @@ export function DataTable<TData, TValue>({
         <Input
           placeholder="Filter emails..."
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
+          onChange={(event) => {
             table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
+          }}
+          className=" hidden max-w-sm"
         />
       </div>
 
