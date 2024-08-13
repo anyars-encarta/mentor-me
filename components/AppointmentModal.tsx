@@ -38,7 +38,7 @@ const AppointmentModal = ({ type, menteeId, userId, appointment, trigger }: {
                             {''} {type}
                         </span> a <span className={`${type === 'cancel' ? 'text-red-500' : 'text-green-500'}`}>
                         {''} {appointment.appointmentType}
-                        </span> appointment for <span className={`${type === 'cancel' ? 'text-red-500' : 'text-green-500'}`}>
+                        </span> appointment with <span className={`${type === 'cancel' ? 'text-red-500' : 'text-green-500'}`}>
                         {''} {appointment.mentee.name}
                         </span>.
                     </DialogDescription>

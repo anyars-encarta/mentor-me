@@ -7,7 +7,7 @@ import { Form } from "@/components/ui/form"
 import CustomFormField, { FormFieldType } from "../CustomFormField"
 import SubmitButton from "../SubmitButton"
 import { useState } from "react"
-import { AppointmentFormValidation, MenteeFormValidation } from "@/lib/validation"
+import { AppointmentFormValidation } from "@/lib/validation"
 import { useRouter } from "next/navigation"
 import { Appointment } from "@/types/appwrite.types"
 import { AppointmentTypes } from "@/constatnts"
@@ -27,8 +27,6 @@ const UpdateAppointment = ({
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
-    console.log('The Appointment: ', appointment)
-
     const form = useForm<z.infer<typeof AppointmentFormValidation>>({
         resolver: zodResolver(AppointmentFormValidation),
         defaultValues: {
@@ -36,7 +34,7 @@ const UpdateAppointment = ({
             schedule: appointment ? new Date(appointment.schedule) : new Date(),
             reason: appointment ? appointment.reason : '',
             additionalComments: appointment ? appointment.additionalComments : '',
-            cancellationReason: appointment ? appointment.cancellationReason : '',
+            cancellationReason: appointment?.cancellationReason || '',
         },
     });
 
@@ -69,18 +67,62 @@ const UpdateAppointment = ({
     const onSubmit = async (values: z.infer<typeof AppointmentFormValidation>) => {
         setIsLoading(true)
 
+        let status;
+
+        switch (type) {
+            case 'schedule':
+                status = 'scheduled';
+                break;
+
+            case 'cancel':
+                status = 'cancelled';
+                break;
+
+            case 'complete':
+                status = 'completed';
+                break;
+
+            case 'meet':
+                status = 'met';
+                break;
+
+            default:
+                status = 'pending';
+                break;
+        }
+
         try {
-            const appointmentData = {
-                appointmentType: values.appointmentType,
-                schedule: values.schedule,
-                reason: values.reason,
-                additionalComments: values.additionalComments,
-                cancellationReason: values.cancellationReason,
-            };
+            if (type === 'schedule' && menteeId) {
+                console.log('Updating appointment')
+                const appointmentToUpdate = {
+                    userId,
+                    appointmentId: appointment?.$id!,
+                    appointment: {
+                        appointmentType: values?.appointmentType,
+                        schedule: new Date(values?.schedule),
+                        reason: values?.reason,
+                        additionalComments: values?.additionalComments,
+                        cancellationReason: values?.cancellationReason,
+                        status: status as Status,
+                    },
+                    type,
+                }
 
-            const user = await updateAppointment(appointmentData);
+                console.log('Appointment to Update: ', appointmentToUpdate)
+                const updatedAppointed = await updateAppointment(appointmentToUpdate);
+                
+                console.log('Updated Appointment', updatedAppointed)
+                if (updatedAppointed) {
+                    setOpen && setOpen(false);
+                    form.reset();
+                }
+            } else if (type === 'cancel' && menteeId) {
 
-            // if (user) router.push(`/mentees/${user.$id}/appointment`)
+            } else if (type === 'meet' && menteeId) {
+
+            } else if (type === 'complete' && menteeId) {
+
+            }
         } catch (e) {
             console.log(e);
         }

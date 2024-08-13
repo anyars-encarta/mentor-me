@@ -1,5 +1,4 @@
 import { Models } from "node-appwrite";
-import { Gender, Status } from ".";
 
 export interface Mentee extends Models.Document {
   userId: string;
