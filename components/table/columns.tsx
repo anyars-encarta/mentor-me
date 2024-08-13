@@ -136,7 +136,7 @@ export const columns: ColumnDef<Appointment>[] = [
                                             height={16}
                                             width={16}
                                             alt='meet'
-                                            className=' size-6 w-fit cursor-pointer rounded-full' />
+                                            className=' size-6 w-fit cursor-pointer' />
                                     }
                                 />
                             </TooltipTrigger>
