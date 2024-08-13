@@ -102,7 +102,7 @@ export const columns: ColumnDef<Appointment>[] = [
                         appointment={data}
                         trigger={
                             <Image
-                                src='/assets/icons/meet.svg'
+                                src='/assets/icons/meet.png'
                                 height={16}
                                 width={16}
                                 alt='meet'
