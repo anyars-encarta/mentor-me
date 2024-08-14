@@ -32,8 +32,6 @@ const AppointmentForm = ({
         setIsLoading(true);
 
     };
-
-    console.log('The type is: ', type)
     
     return (
         <Form {...form}>
