@@ -14,7 +14,7 @@ import { Label } from "../ui/label"
 import NewAppointmentForm from "@/app/mentees/[userId]/new-appointment/NewAppointmentForm"
 import { createAppointment } from "@/lib/actions/appointment.actions"
 import { useRouter } from "next/navigation"
-
+import * as Sentry from '@sentry/nextjs';
 
 const RegisterForm = ({ user }: { user: User }) => {
     const router = useRouter();
@@ -93,6 +93,8 @@ const RegisterForm = ({ user }: { user: User }) => {
 
             const registeredMentee = await registerMentee(menteeData);
 
+            Sentry.metrics.set("user_view_register", registeredMentee.name);
+
             // If mentee registration is successful, proceed with the appointment creation
             if (registeredMentee?.$id) {
                 const appointmentData = {
@@ -107,6 +109,8 @@ const RegisterForm = ({ user }: { user: User }) => {
                 };
 
                 const appointment = await createAppointment(appointmentData);
+
+                Sentry.metrics.set("user_view_new-appointment", appointment.mentee.name);
 
                 if (appointment) {
                     form.reset();
