@@ -5,6 +5,7 @@ import { APPOINTMENT_COLLECTION_ID, DATABASE_ID, databases, messaging } from "..
 import { formatDateTime, parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
 import { revalidatePath } from "next/cache";
+import { getUser } from "./mentee.actions";
 
 export const createAppointment = async (appointment: CreateAppointmentParams) => {
     try {
@@ -77,6 +78,8 @@ export const getRecentAppointmentList = async () => {
 }
 
 export const updateAppointment = async ({ appointmentId, userId, appointment, type }: UpdateAppointmentParams) => {
+    const user = await getUser(userId);
+
     try {
         const updatedAppointment = await databases.updateDocument(
             DATABASE_ID!,
@@ -91,7 +94,7 @@ export const updateAppointment = async ({ appointmentId, userId, appointment, ty
 
         // Send SMS Notification
         const smsMessage = `
-        Hi, its MentorMe. 
+        Hi, ${user.name}, its MentorMe. 
         ${type === 'schedule' 
             ? `Your appointment has been scheduled for ${formatDateTime(appointment.schedule!).dateTime}`
         : type === 'cancel' && `We regret to inform you that your appointment has been cancelled for the following reason: ${appointment.cancellationReason}`}
