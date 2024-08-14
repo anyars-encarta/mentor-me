@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Control } from "react-hook-form";
-import { FormFieldType } from "./forms/MentorForm";
 import Image from "next/image";
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
@@ -34,6 +33,16 @@ interface CustomProps {
     children?: React.ReactNode,
     renderSkeleton?: (field: any) => React.ReactNode,
 }
+
+export enum FormFieldType {
+    INPUT = 'input',
+    TEXTAREA = 'textarea',
+    PHONE_INPUT = 'phoneInput',
+    CHECKBOX = 'checkbox',
+    DATE_PICKER = 'datePicker',
+    SELECT = 'select',
+    SEKELETON = 'skeleton',
+};
 
 const RenderField = ({ field, props }: { field: any, props: CustomProps }) => {
     switch (props.fieldType) {
@@ -63,13 +72,13 @@ const RenderField = ({ field, props }: { field: any, props: CustomProps }) => {
         case FormFieldType.TEXTAREA:
             return (
                 <FormControl>
-                    <Textarea 
-                    placeholder={props.placeholder}
-                    {...field}
-                    className='shad-textArea'
-                    diabled={props.disabled}
+                    <Textarea
+                        placeholder={props.placeholder}
+                        {...field}
+                        className='shad-textArea'
+                        diabled={props.disabled}
                     />
-                    
+
                 </FormControl>
             )
 

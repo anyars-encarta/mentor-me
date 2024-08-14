@@ -13,7 +13,9 @@ export const MenteeFormDefaultValues = {
   };
 
   export const StatusIcon = {
-    scheduled: "/assets/icons/check.svg",
+    scheduled: "/assets/icons/appointments.svg",
     pending: "/assets/icons/pending.svg",
     cancelled: "/assets/icons/cancelled.svg",
+    completed: "/assets/icons/check.svg",
+    met: "/assets/icons/check.svg"
   };
