@@ -91,7 +91,7 @@ const UpdateAppointment = ({
 
         try {
             if (type === 'meet' && menteeId) {
-                console.log('User are about to start a virtual meeting')
+                console.log('User are about to start a virtual meeting with: ', menteeId)
             } else {
                 const appointmentToUpdate = {
                     userId,
