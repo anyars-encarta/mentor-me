@@ -18,10 +18,10 @@ const CloseAdmin = () => {
                     <TooltipTrigger>
                         <Image
                             src='/assets/icons/power.png'
-                            height={20}
-                            width={20}
+                            height={16}
+                            width={16}
                             alt='logo'
-                            className='size-6 object-cover rounded-full cursor-pointer'
+                            className='size-5 object-cover rounded-full cursor-pointer'
                             onClick={handleExitAdmin}
                         />
                     </TooltipTrigger>
