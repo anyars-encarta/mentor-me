@@ -8,7 +8,6 @@ import CustomFormField, { FormFieldType } from "../CustomFormField"
 import SubmitButton from "../SubmitButton"
 import { useState } from "react"
 import { AppointmentFormValidation } from "@/lib/validation"
-import { useRouter } from "next/navigation"
 import { Appointment } from "@/types/appwrite.types"
 import { AppointmentTypes } from "@/constatnts"
 import { SelectItem } from "../ui/select"
@@ -24,14 +23,13 @@ const UpdateAppointment = ({
     appointment?: Appointment,
     setOpen: (open: boolean) => void,
 }) => {
-    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<z.infer<typeof AppointmentFormValidation>>({
         resolver: zodResolver(AppointmentFormValidation),
         defaultValues: {
             appointmentType: appointment ? appointment.appointmentType : '',
-            schedule: appointment ? new Date(appointment.schedule) : new Date(),
+            schedule: appointment ? new Date(appointment.schedule) : new Date(Date.now()),
             reason: appointment ? appointment.reason : '',
             additionalComments: appointment ? appointment.additionalComments : '',
             cancellationReason: appointment?.cancellationReason || '',
