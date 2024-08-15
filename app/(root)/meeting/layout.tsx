@@ -4,6 +4,9 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "MentorMe",
   description: "A Virtual Mentoring and Coaching System",
+  icons: {
+    icon: '/assets/icons/logo-icon.png'
+  }
 };
 
 const RootLayout = ({ children, }: { children: React.ReactNode }) => {
