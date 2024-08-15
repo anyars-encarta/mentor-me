@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+import { ReactNode } from "react";
 
 const fontSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   }
 };
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
+const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
       <ClerkProvider 
