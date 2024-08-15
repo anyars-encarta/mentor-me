@@ -96,7 +96,7 @@ export const updateAppointment = async ({ appointmentId, userId, appointment, ty
         const smsMessage = `
         Hi, ${user.name}, its MentorMe. 
         ${type === 'schedule' 
-            ? `Your appointment has been scheduled for ${formatDateTime(appointment.schedule!).dateTime}`
+            ? `Your appointment has been scheduled for ${formatDateTime(appointment.schedule!).dateTime}. Meeting ID: ${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${appointment.meetingId}`
         : type === 'cancel' && `We regret to inform you that your appointment has been cancelled for the following reason: ${appointment.cancellationReason}`}
         `
 

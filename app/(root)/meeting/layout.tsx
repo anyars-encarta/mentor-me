@@ -1,3 +1,4 @@
+import StreamVideoProvider from "@/providers/StreamClientProvider";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -5,14 +6,14 @@ export const metadata: Metadata = {
   description: "A Virtual Mentoring and Coaching System",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+const RootLayout = ({ children, }: { children: React.ReactNode }) => {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <main>
+      <StreamVideoProvider>
+        {children}
+      </StreamVideoProvider>
+    </main>
   )
 }
+
+export default RootLayout;

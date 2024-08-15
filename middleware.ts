@@ -4,8 +4,9 @@ const protectedRoutes = createRouteMatcher([
     '/',
     '/admin',
     '/mentees/[userId]/appointment',
-    '/mentees/[userId]/appointment/success?appointmentId=[appointmentId]',
-    '/meeting(.*)'
+    '/mentees/[userId]/new-appointment',
+    '/mentees/[userId]/appointment/success',
+    '/meeting(.*)',
 ])
  
 export default clerkMiddleware((auth, req) => {

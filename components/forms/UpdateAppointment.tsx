@@ -12,6 +12,9 @@ import { Appointment } from "@/types/appwrite.types"
 import { AppointmentTypes } from "@/constatnts"
 import { SelectItem } from "../ui/select"
 import { updateAppointment } from "@/lib/actions/appointment.actions"
+import { useUser } from "@clerk/nextjs"
+import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk"
+import { useRouter } from "next/navigation"
 
 
 const UpdateAppointment = ({
@@ -23,7 +26,16 @@ const UpdateAppointment = ({
     appointment?: Appointment,
     setOpen: (open: boolean) => void,
 }) => {
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const { user } = useUser();
+    const client = useStreamVideoClient();
+    const [values, setValues] = useState({
+        dateTime: new Date(),
+        description: '',
+        link: '',
+    });
+    const [callDetails, setCallDetails] = useState<Call>();
 
     const form = useForm<z.infer<typeof AppointmentFormValidation>>({
         resolver: zodResolver(AppointmentFormValidation),
@@ -62,6 +74,40 @@ const UpdateAppointment = ({
             break;
     }
 
+    const createMeeting = async () => {
+        console.log('Client ', client)
+        console.log('User ', user)
+        if (!client || !user) return;
+        
+
+        try {
+            const id = appointment?.meetingId;
+            console.log('Appointment ID ', id)
+            const call = client.call('default', id);
+
+            if (!call) throw new Error('Failed to create call');
+
+            const startsAt = values.dateTime.toISOString() || new Date(Date.now()).toISOString;
+            const description = values.description || 'Instant meeting';
+
+            await call.getOrCreate({
+                data: {
+                    starts_at: startsAt!,
+                    custom: {
+                        description
+                    }
+                }
+            })
+
+            setCallDetails(call);
+            if (!values.description) {
+                router.push(`/meeting/${call.id}`)
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    };
+
     const onSubmit = async (values: z.infer<typeof AppointmentFormValidation>) => {
         setIsLoading(true)
 
@@ -91,8 +137,11 @@ const UpdateAppointment = ({
 
         try {
             if (type === 'meet' && menteeId) {
-                console.log('User are about to start a virtual meeting with: ', menteeId)
+                // Start Meeting
+                createMeeting();
             } else {
+                const meetingId = crypto.randomUUID();
+
                 const appointmentToUpdate = {
                     userId,
                     appointmentId: appointment?.$id!,
@@ -103,6 +152,7 @@ const UpdateAppointment = ({
                         additionalComments: values?.additionalComments,
                         cancellationReason: values?.cancellationReason,
                         status: status as Status,
+                        meetingId: meetingId,
                     },
                     type,
                 }
