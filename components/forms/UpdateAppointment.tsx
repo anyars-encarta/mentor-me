@@ -87,12 +87,12 @@ const UpdateAppointment = ({
 
             if (!call) throw new Error('Failed to create call');
 
-            const startsAt = values.dateTime.toISOString() || new Date(Date.now()).toISOString;
+            const startsAt = values.dateTime.toISOString() || new Date(Date.now()).toISOString();
             const description = values.description || 'Instant meeting';
 
             await call.getOrCreate({
                 data: {
-                    starts_at: startsAt!,
+                    starts_at: startsAt,
                     custom: {
                         description
                     }
