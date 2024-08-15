@@ -8,7 +8,7 @@ import { ReactNode, useEffect, useState } from 'react';
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
 
-const StreamVideoProvider = async ({ children, userId }: { children: ReactNode, userId: string }) => {
+const StreamVideoProvider = async ({ children }: { children: ReactNode }) => {
   const [videoClient, setVideoClient] = useState<StreamVideoClient>();
   const [isLoaded, setIsLoaded] = useState(false);
   const user = await getUser(userId);
