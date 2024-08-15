@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ClerkProvider } from "@clerk/nextjs";
+import "./globals.css";
 
 const fontSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -15,21 +16,35 @@ export const metadata: Metadata = {
   description: "A Virtual Mentoring and Coaching System",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
-      <body className={cn('min-h-screen bg-dark-300 font-sans antialiased', fontSans.variable)}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-        >
-          {children}
-        </ThemeProvider>
-      </body>
+      <ClerkProvider 
+      appearance={{
+        layout: {
+          logoImageUrl: '/assets/icons/logo-icon.png',
+          socialButtonsVariant: 'iconButton'
+        },
+        variables: {
+          colorText: '#fff',
+          colorPrimary: '#0E78F9',
+          colorBackground: '#1c1f2e',
+          colorInputBackground: '#252a41',
+          colorInputText: '#fff'
+        }
+      }}
+      >
+        <body className={cn('min-h-screen bg-dark-300 font-sans antialiased', fontSans.variable)}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+          >
+            {children}
+          </ThemeProvider>
+        </body>
+      </ClerkProvider>
     </html>
   );
 }
+
+export default RootLayout
