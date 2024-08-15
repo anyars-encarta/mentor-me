@@ -1,5 +1,6 @@
 import { getUser } from '@/lib/actions/mentee.actions';
 import { tokenProvider } from '@/lib/actions/stream.actions';
+import { useUser } from '@clerk/nextjs';
 import {
   StreamVideo,
   StreamVideoClient,
@@ -10,8 +11,7 @@ const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
 
 const StreamVideoProvider = async ({ children }: { children: ReactNode }) => {
   const [videoClient, setVideoClient] = useState<StreamVideoClient>();
-  const [isLoaded, setIsLoaded] = useState(false);
-  const user = await getUser(userId);
+  const { user, isLoaded } = useUser();
 
   useEffect(() => {
     if (!isLoaded || !user) return;
@@ -20,11 +20,11 @@ const StreamVideoProvider = async ({ children }: { children: ReactNode }) => {
     const client = new StreamVideoClient({
       apiKey,
       user: {
-        id: user?.$id,
-        name: user?.name || user?.$id,
+        id: user.id,
+        name: user.name || user.id,
         image: '',
       },
-      tokenProvider: tokenProvider(userId)
+      tokenProvider: tokenProvider
     })
 
     setVideoClient(client)
