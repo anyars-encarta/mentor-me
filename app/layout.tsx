@@ -3,8 +3,9 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
-import "./globals.css";
 import { ReactNode } from "react";
+import { Toaster } from "@/components/ui/toaster";
+import "./globals.css";
 
 const fontSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -44,6 +45,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
             defaultTheme="dark"
           >
             {children}
+            <Toaster />
           </ThemeProvider>
         </body>
       </ClerkProvider>

@@ -15,7 +15,8 @@ import { updateAppointment } from "@/lib/actions/appointment.actions"
 import { useUser } from "@clerk/nextjs"
 import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk"
 import { useRouter } from "next/navigation"
-
+import { useToast } from "@/components/ui/use-toast";
+import { formatDateTime } from "@/lib/utils"
 
 const UpdateAppointment = ({
     type, menteeId, userId, appointment, setOpen
@@ -26,6 +27,7 @@ const UpdateAppointment = ({
     appointment?: Appointment,
     setOpen: (open: boolean) => void,
 }) => {
+    const { toast } = useToast();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const { user } = useUser();
@@ -79,7 +81,6 @@ const UpdateAppointment = ({
         console.log('User ', user)
         if (!client || !user) return;
         
-
         try {
             const id = appointment?.meetingId;
             console.log('Appointment ID ', id)
@@ -105,6 +106,9 @@ const UpdateAppointment = ({
             }
         } catch (e) {
             console.log(e)
+            toast({
+                title: "Failed to create meeting",
+              })
         }
     };
 
@@ -163,9 +167,17 @@ const UpdateAppointment = ({
                     setOpen && setOpen(false);
                     form.reset();
                 }
+
+                toast({
+                    title: "Scheduled: Meeting",
+                    description: `${formatDateTime(appointment?.schedule!).dateTime}`,
+                  })
             }
         } catch (e) {
             console.log(e);
+            toast({
+                title: `Failed to ${type} the appointment`,
+              })
         }
     }
 
