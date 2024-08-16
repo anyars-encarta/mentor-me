@@ -77,13 +77,10 @@ const UpdateAppointment = ({
     }
 
     const createMeeting = async () => {
-        console.log('Client ', client)
-        console.log('User ', user)
         if (!client || !user) return;
 
         try {
             const id = appointment?.meetingId;
-            console.log('Appointment ID ', id)
             const call = client.call('default', id);
 
             if (!call) throw new Error('Failed to create call');
