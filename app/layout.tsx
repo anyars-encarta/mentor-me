@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ReactNode } from "react";
+import '@stream-io/video-react-sdk/dist/css/styles.css';
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
