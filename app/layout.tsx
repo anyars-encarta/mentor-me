@@ -24,20 +24,20 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
-      <ClerkProvider 
-      appearance={{
-        layout: {
-          logoImageUrl: '/assets/icons/logo-icon.png',
-          socialButtonsVariant: 'iconButton'
-        },
-        variables: {
-          colorText: '#fff',
-          colorPrimary: '#0E78F9',
-          colorBackground: '#1c1f2e',
-          colorInputBackground: '#252a41',
-          colorInputText: '#fff'
-        }
-      }}
+      <ClerkProvider
+        appearance={{
+          layout: {
+            logoImageUrl: '/assets/icons/logo-icon.png',
+            socialButtonsVariant: 'iconButton'
+          },
+          variables: {
+            colorText: '#fff',
+            colorPrimary: '#0E78F9',
+            colorBackground: '#1c1f2e',
+            colorInputBackground: '#252a41',
+            colorInputText: '#fff'
+          }
+        }}
       >
         <body className={cn('min-h-screen bg-dark-300 font-sans antialiased', fontSans.variable)}>
           <ThemeProvider

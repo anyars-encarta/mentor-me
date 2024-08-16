@@ -80,7 +80,7 @@ const UpdateAppointment = ({
         console.log('Client ', client)
         console.log('User ', user)
         if (!client || !user) return;
-        
+
         try {
             const id = appointment?.meetingId;
             console.log('Appointment ID ', id)
@@ -104,11 +104,15 @@ const UpdateAppointment = ({
             if (!values.description) {
                 router.push(`/meeting/${call.id}`)
             }
+
+            toast({
+                title: "Scheduled: Started",
+            })
         } catch (e) {
             console.log(e)
             toast({
                 title: "Failed to create meeting",
-              })
+            })
         }
     };
 
@@ -171,13 +175,13 @@ const UpdateAppointment = ({
                 toast({
                     title: "Scheduled: Meeting",
                     description: `${formatDateTime(appointment?.schedule!).dateTime}`,
-                  })
+                })
             }
         } catch (e) {
             console.log(e);
             toast({
                 title: `Failed to ${type} the appointment`,
-              })
+            })
         }
     }
 
