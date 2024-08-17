@@ -12,7 +12,11 @@ import { Appointment } from "@/types/appwrite.types"
 import { AppointmentTypes } from "@/constatnts"
 import { SelectItem } from "../ui/select"
 import { updateAppointment } from "@/lib/actions/appointment.actions"
-
+import { useUser } from "@clerk/nextjs"
+import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk"
+import { useRouter } from "next/navigation"
+import { useToast } from "@/components/ui/use-toast";
+import { formatDateTime } from "@/lib/utils"
 
 const UpdateAppointment = ({
     type, menteeId, userId, appointment, setOpen
@@ -23,7 +27,17 @@ const UpdateAppointment = ({
     appointment?: Appointment,
     setOpen: (open: boolean) => void,
 }) => {
+    const { toast } = useToast();
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const { user } = useUser();
+    const client = useStreamVideoClient();
+    const [values, setValues] = useState({
+        dateTime: new Date(),
+        description: '',
+        link: '',
+    });
+    const [callDetails, setCallDetails] = useState<Call>();
 
     const form = useForm<z.infer<typeof AppointmentFormValidation>>({
         resolver: zodResolver(AppointmentFormValidation),
@@ -62,6 +76,43 @@ const UpdateAppointment = ({
             break;
     }
 
+    const createMeeting = async () => {
+        if (!client || !user) return;
+
+        try {
+            const id = appointment?.meetingId;
+            const call = client.call('default', id);
+
+            if (!call) throw new Error('Failed to create call');
+
+            const startsAt = values.dateTime.toISOString() || new Date(Date.now()).toISOString();
+            const description = values.description || 'Instant meeting';
+
+            await call.getOrCreate({
+                data: {
+                    starts_at: startsAt,
+                    custom: {
+                        description
+                    }
+                }
+            })
+
+            setCallDetails(call);
+            if (!values.description) {
+                router.push(`/meeting/${call.id}`)
+            }
+
+            toast({
+                title: "Scheduled: Started",
+            })
+        } catch (e) {
+            console.log(e)
+            toast({
+                title: "Failed to create meeting",
+            })
+        }
+    };
+
     const onSubmit = async (values: z.infer<typeof AppointmentFormValidation>) => {
         setIsLoading(true)
 
@@ -91,8 +142,11 @@ const UpdateAppointment = ({
 
         try {
             if (type === 'meet' && menteeId) {
-                console.log('User are about to start a virtual meeting with: ', menteeId)
+                // Start Meeting
+                createMeeting();
             } else {
+                const meetingId = crypto.randomUUID();
+
                 const appointmentToUpdate = {
                     userId,
                     appointmentId: appointment?.$id!,
@@ -103,6 +157,7 @@ const UpdateAppointment = ({
                         additionalComments: values?.additionalComments,
                         cancellationReason: values?.cancellationReason,
                         status: status as Status,
+                        meetingId: meetingId,
                     },
                     type,
                 }
@@ -113,9 +168,17 @@ const UpdateAppointment = ({
                     setOpen && setOpen(false);
                     form.reset();
                 }
+
+                toast({
+                    title: "Scheduled: Meeting",
+                    description: `${formatDateTime(appointment?.schedule!).dateTime}`,
+                })
             }
         } catch (e) {
             console.log(e);
+            toast({
+                title: `Failed to ${type} the appointment`,
+            })
         }
     }
 

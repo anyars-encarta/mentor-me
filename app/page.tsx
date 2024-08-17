@@ -1,10 +1,11 @@
 import MentorForm from "@/components/forms/MentorForm";
 import PasskeyModal from "@/components/PasskeyModal";
+import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
-const Home = ({ searchParams}: SearchParamProps) => {
-  const isAdmin = searchParams.admin ==='true';
+const Home = ({ searchParams }: SearchParamProps) => {
+  const isAdmin = searchParams.admin === 'true';
 
   return (
     <div className='flex h-screen max-h-screen'>
@@ -14,13 +15,17 @@ const Home = ({ searchParams}: SearchParamProps) => {
 
       <section className='remove-scrollbar container my-auto'>
         <div className='sub-container max-w-[496px]'>
-          <Image
-            src='/assets/icons/logo-full.png'
-            width={1000}
-            height={1000}
-            alt='mentor'
-            className='mb-12 h-10 w-fit'
-          />
+          <div className='flex items-center justify-between'>
+            <Image
+              src='/assets/icons/logo-full.png'
+              width={1000}
+              height={1000}
+              alt='mentor'
+              className='mb-12 h-10 w-fit'
+            />
+
+            <UserButton />
+          </div>
 
           <MentorForm />
 
@@ -33,9 +38,9 @@ const Home = ({ searchParams}: SearchParamProps) => {
             <Link href='/?admin=true' className='text-green-500'>Admin</Link>
           </div>
 
-            <p className='text-center text-dark-600 mt-5 text-xs'>
-              Developed by Encarta Networks & Multimedia - +233 24 211 9972, anyarsencarta@gmail.com
-            </p>
+          <p className='text-center text-dark-600 mt-5 text-xs'>
+            Developed by Encarta Networks & Multimedia - +233 24 211 9972, anyarsencarta@gmail.com
+          </p>
         </div>
       </section>
 
