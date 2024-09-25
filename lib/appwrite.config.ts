@@ -15,12 +15,6 @@ client
     .setProject(PROJECT_ID!)
     .setKey(API_KEY!);
 
-    client.headers = {
-        'Access-Control-Allow-Origin': BASE_URL!,
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    };
-
 export const databases = new sdk.Databases(client);
 export const storage = new sdk.Storage(client);
 export const messaging = new sdk.Messaging(client);
