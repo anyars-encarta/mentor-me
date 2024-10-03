@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). MentorMe is a mentoring or councelling booking app that allows users book appointments with a Mentor/Counsellor.
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). MentorMe is a mentoring or councelling booking app that allows users book appointments with a Mentor/Counsellor. Users receive SMS confirmation
 
 ## Getting Started
 
