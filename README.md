@@ -1,4 +1,4 @@
-MentorMe is a mentoring or councelling booking app that allows users book appointments with a Mentor/Counsellor. Users receive SMS confirmation with a virtual meeting link. Users could have a virtual meeting with the Mentor/Counsellor without meeting in person. without meeting in
+MentorMe is a mentoring or councelling booking app that allows users book appointments with a Mentor/Counsellor. Users receive SMS confirmation with a virtual meeting link. Users could have a virtual meeting with the Mentor/Counsellor without meeting in person. without meeting
 
 ## Getting Started
 
